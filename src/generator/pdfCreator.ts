@@ -259,7 +259,6 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     form.getTextField("Creed")?.setText(character.creed || "")
     form.getTextField("Drive")?.setText(character.drive || "")
     form.getTextField("Chronicle")?.setText(character.chronicle || "")
-    form.getTextField("Pack")?.setText(character.pack || "")
     form.getTextField("Ambition")?.setText(character.ambition || "")
     form.getTextField("Desire")?.setText(character.desire || "")
 
