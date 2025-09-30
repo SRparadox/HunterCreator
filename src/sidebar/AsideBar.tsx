@@ -12,13 +12,13 @@ export type AsideBarProps = {
 const AsideBar = ({ selectedStep, setSelectedStep, character }: AsideBarProps) => {
     // const smallScreen = globals.isSmallScreen
     const stepperKeys = [
-        "clan", // Maps to creed
+        "clan", // Maps to tribe
         "attributes",
         "skills", 
-        "auspice", // Hunter auspice selection (if applicable)
+        "auspice", // Werewolf auspice selection
         "name",
         "disciplines", // Maps to gifts
-        "rites", // Hunter rites
+        "rites", // Werewolf rites
         "touchstones",
         "merits",
     ] as (keyof Character)[]
@@ -47,7 +47,7 @@ const AsideBar = ({ selectedStep, setSelectedStep, character }: AsideBarProps) =
                     {" "}
                 </Stepper.Step>
                 {stepperKeys.map((title) => {
-                    let displayTitle = title === "clan" ? "Creed" : upcase(title as string)
+                    let displayTitle = title === "clan" ? "Tribe" : upcase(title as string)
                     if (title === "auspice") displayTitle = "Auspice"
                     if (title === "disciplines") displayTitle = "Gifts"
                     if (title === "rites") displayTitle = "Rites"

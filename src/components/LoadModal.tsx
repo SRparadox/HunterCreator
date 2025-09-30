@@ -4,8 +4,8 @@ import { Button, Divider, Group, Modal, Stack, Text } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { Buffer } from "buffer"
 import { z } from "zod"
-import { creeds } from "~/data/Creeds"
-import { creedNameSchema } from "~/data/NameSchemas"
+import { tribes } from "~/data/Tribes"
+import { tribeNameSchema } from "~/data/NameSchemas"
 import { Character, characterSchema } from "../data/Character"
 import { getUploadFile } from "../generator/utils"
 
@@ -52,8 +52,8 @@ const LoadModal = ({ loadModalOpened, closeLoadModal, setCharacter, loadedFile }
                                     
                                     // Try to parse as tribe first (new format)
                                     try {
-                                        const creed = creedNameSchema.parse(clanOrTribe)
-                                        availableDisciplines = creeds[creed].gifts
+                                        const tribe = tribeNameSchema.parse(clanOrTribe)
+                                        availableDisciplines = tribes[tribe].gifts
                                     } catch (e) {
                                         // Fall back to empty for old clan saves (no longer supported)
                                         availableDisciplines = []

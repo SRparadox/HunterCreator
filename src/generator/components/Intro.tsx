@@ -49,10 +49,10 @@ const Intro = ({ setCharacter, nextStep }: IntroProps) => {
     return (
         <Alert mt={globals.isPhoneScreen ? "75px" : "50px"} color="grape" variant="outline" bg={"rgba(0, 0, 0, 0.6)"}>
             <Text fz={globals.largeFontSize} ta={"center"} mb={"lg"}>
-                This is a &apos;Hunter: The Reckoning&apos; 5th Edition character creation tool for beginners
+                This is a &apos;Werewolf: the Apocalypse&apos; 5th Edition character creation tool for beginners
             </Text>
             <Text fz={globals.smallerFontSize} mb={"xs"}>
-                It is intentionally streamlined and limited to creating a common type of Hunter character following the rules from the source book.
+                It is intentionally streamlined and limited to creating a common type of Garou character following the rules from the source book.
             </Text>
             <Text fz={globals.smallerFontSize} mb={"xs"}>
                 You can download your character into a printable PDF when you&apos;re done and also save it to a local file that you can load into this web app to continue editing.
@@ -104,7 +104,7 @@ const Intro = ({ setCharacter, nextStep }: IntroProps) => {
 
                 <Button
                     component="a"
-                    href="https://github.com/SRparadox/HunterCreator"
+                    href="https://github.com/Odin94/Progeny-vtm-v5-character-creator"
                     target="_blank"
                     rel="noreferrer"
                     leftIcon={<IconBrandGithub />}
@@ -136,6 +136,15 @@ const Intro = ({ setCharacter, nextStep }: IntroProps) => {
                     variant="subtle"
                 >
                     <Text color="rgb(190,190,190)">View My Website</Text>
+                </Button>
+                <Button
+                    leftIcon={<FontAwesomeIcon icon={faTrash} />}
+                    size="md"
+                    color="red"
+                    variant="outline"
+                    onClick={handleResetAllData}
+                >
+                    Reset All Data
                 </Button>
             </Stack>
 

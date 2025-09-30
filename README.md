@@ -1,15 +1,15 @@
 <h1 align="center">
-  <div>🏹 Hunter �</div>
-  <div style="font-size: 20px;">A 'Hunter: The Reckoning' 5th Edition Character Creator</div>
+  <div>🐺 Howl 🌙</div>
+  <div style="font-size: 20px;">A 'Werewolf: the Apocalypse' 5th Edition Character Creator</div>
 </h1>
 
 
-Quickly and easily create your Hunter character & export to printable, editable PDF.
-[Link](https://srparadox.github.io/HunterCreator)
+Quickly and easily create your Werewolf character & export to printable, editable PDF.
+[Link](https://srparadox.github.io/Werewolf-Character-Creator)
 
 The creator runs entirely in your browser, no files are sent to a server.
 
-This is a 'Hunter: The Reckoning' character creation tool for beginners. It is intentionally streamlined and limited to creating a common type of character following the rules from the source book. You can download your character into a printable PDF when you're done and also save it to a local JSON file that you can load into this web app to continue editing.
+This is a 'Werewolf: the Apocalypse' character creation tool for beginners. It is intentionally streamlined and limited to creating a common type of character following the rules from the source book. You can download your character into a printable PDF when you're done and also save it to a local JSON file that you can load into this web app to continue editing.
 
 This was possible with the groundwork and structure provided by odin_dev
 
@@ -46,7 +46,7 @@ This was possible with the groundwork and structure provided by odin_dev
 
 
 ## Credits & Acknowledgements
-* Hunter: The Reckoning is owned by https://www.worldofdarkness.com/dark-pack
+* Werewolf: the Apocalypse is owned by https://www.worldofdarkness.com/dark-pack
 * CheckSolid.base64 is converted from fontawesome
 * FavIcon and icons provided by various sources
 * Background images by Aleksandr Popov, Amber Kipp, Dominik Hofbauer, Marcus Bellamy, Peter Scherbatykh, Thomas Le on [unsplash](unsplash.com)

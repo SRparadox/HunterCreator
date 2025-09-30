@@ -21,9 +21,9 @@ const Sidebar = ({ character }: SidebarProps) => {
         // Subtracting header-height
         <ScrollArea h={height - 60} type="never">
             <Stack>
-                {notDefault(character, "creed") ? (
+                {notDefault(character, "tribe") ? (
                     <Text fz="xl">
-                        <Center><b>Creed:</b> {character.creed}</Center>
+                        <Center><b>Tribe:</b> {character.tribe}</Center>
                     </Text>
                 ) : null}
                 {notDefault(character, "name") ? <BasicsDisplay character={character} /> : null}
