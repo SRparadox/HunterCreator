@@ -1,3 +1,4 @@
+
 import { notifications } from "@mantine/notifications"
 import fontkit from "@pdf-lib/fontkit"
 import { PDFBool, PDFDocument, PDFFont, PDFForm, PDFName } from "pdf-lib"
@@ -254,31 +255,114 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     }
 
     // Top fields - Hunter character info
-    form.getTextField("Name")?.setText(character.name)
-    form.getTextField("Player")?.setText(character.playerName || "")
-    form.getTextField("Creed")?.setText(character.creed || "")
-    form.getTextField("Drive")?.setText(character.drive || "")
-    form.getTextField("Chronicle")?.setText(character.chronicle || "")
-    form.getTextField("Concept")?.setText(character.concept || "")
-    form.getTextField("Pack")?.setText(character.pack || "")
+    // Name
+    try {
+        form.getTextField("Name")?.setText(character.name)
+    } catch (e) {
+        console.warn("Could not set Name field:", e)
+    }
+    
+    // Player Name
+    try {
+        form.getTextField("Player")?.setText(character.playerName || "")
+    } catch (e) {
+        // Fallback if Player field doesn't exist
+        try {
+            form.getTextField("pcDescription")?.setText(character.playerName || "")
+        } catch (e2) {
+            // Neither field exists
+        }
+    }
+    
+    // Creed (Hunter's spiritual calling)
+    try {
+        form.getTextField("Creed")?.setText(character.creed || "")
+    } catch (e) {
+        // Fallback for older PDF forms that might expect tribe field
+        try {
+            form.getTextField("Tribe")?.setText(character.creed || "")
+        } catch (e2) {
+            try {
+                form.getTextField("Clan")?.setText(character.creed || "")
+            } catch (e3) {
+                // None of the fields exist
+            }
+        }
+    }
+
+    // Drive (Hunter's motivation)
+    try {
+        form.getTextField("Drive")?.setText(character.drive || "")
+    } catch (e) {
+        // Drive field doesn't exist, try alternative names
+        try {
+            form.getTextField("Nature")?.setText(character.drive || "")
+        } catch (e2) {
+            try {
+                form.getTextField("Demeanor")?.setText(character.drive || "")
+            } catch (e3) {
+                // No suitable field found
+            }
+        }
+    }
+    
+    // Chronicle
+    try {
+        form.getTextField("Chronicle")?.setText(character.chronicle || "")
+    } catch (e) {
+        // Chronicle field doesn't exist in this PDF
+    }
+
+    // Concept
+    try {
+        form.getTextField("Concept")?.setText(character.concept || "")
+    } catch (e) {
+        // Concept field doesn't exist in this PDF
+    }
+    
+    // Pack info (Hunter cell)
+    try {
+        form.getTextField("Pack")?.setText(character.pack || "")
+    } catch (e) {
+        try {
+            form.getTextField("Cell")?.setText(character.pack || "")
+        } catch (e2) {
+            try {
+                form.getTextField("Coterie")?.setText(character.pack || "")
+            } catch (e3) {
+                // No suitable field found
+            }
+        }
+    }
 
     // Edges and Powers - Hunter-specific abilities
-    // Simplify edge handling to match vampire discipline pattern
+    // Hunter PDF uses specific field naming:
+    // Edge names: Edge.X.0.0 (where X is edge index 0, 1, 2...)
+    // Edge powers: Edge.X.1.0 (where X is edge index, 1 indicates power level)
     const getEdgeText = (power: any) => {
-        let text = power.name + ": " + power.summary
+        let text = power.name + ": "
+        
+        // Handle different power types and their summary/description fields
+        if (power.summary) {
+            text += power.summary
+        } else if (power.description) {
+            text += power.description
+        }
         
         // Handle Edge-specific cost information
         if (power.cost) {
+            // It's an Edge with a cost
             text += ` // Cost: ${power.cost}`
         } else if (power.system) {
+            // It's an Edge with system info
             text += ` // ${power.system}`
-        }
-        
-        if (power.dicePool && power.dicePool !== "") {
-            text += ` // ${power.dicePool}`
         }
 
         return text
+    }
+
+    const getEdgeDicePoolText = (power: any) => {
+        return power.dicePool || power.dicePools || power.pool || power.edgePool || ""
     }
 
     // Combine edges and any legacy powers into a single array for unified numbering
@@ -288,22 +372,62 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         ...(character.rituals || [])
     ]
 
-    // Use simpler field pattern similar to vampire disciplines
-    const powersByType = allEdgesAndPowers.reduce(
+    // Fill edge/power names and dice pools using the Hunter-specific field pattern
+    allEdgesAndPowers.forEach((power, index) => {
+        try {
+            // Hunter edges use Edge.X.0.0 pattern for edge names
+            const edgeNameField = `Edge.${index}.0.0`
+            form.getTextField(edgeNameField)?.setText(getEdgeText(power))
+            form.getTextField(edgeNameField)?.disableRichFormatting()
+            
+            // Hunter edge powers use Edge.X.1.0 pattern for dice pools/systems
+            const edgePowerField = `Edge.${index}.1.0`
+            const dicePoolText = getEdgeDicePoolText(power)
+            if (dicePoolText) {
+                form.getTextField(edgePowerField)?.setText(dicePoolText)
+                form.getTextField(edgePowerField)?.disableRichFormatting()
+            }
+        } catch (e) {
+            // If the specific Hunter field doesn't exist, try legacy werewolf naming
+            try {
+                const legacyEdgeField = `0.${index}.Gift_Name-1`
+                form.getTextField(legacyEdgeField)?.setText(getEdgeText(power))
+                form.getTextField(legacyEdgeField)?.disableRichFormatting()
+                
+                const legacyDiceField = `1.${index}.Gift_Name-1`
+                const dicePoolText = getEdgeDicePoolText(power)
+                if (dicePoolText) {
+                    form.getTextField(legacyDiceField)?.setText(dicePoolText)
+                    form.getTextField(legacyDiceField)?.disableRichFormatting()
+                }
+            } catch (e2) {
+                // Try simple Edge naming as final fallback
+                try {
+                    const simpleEdgeField = `Edge${index + 1}`
+                    form.getTextField(simpleEdgeField)?.setText(getEdgeText(power))
+                    form.getTextField(simpleEdgeField)?.disableRichFormatting()
+                } catch (e3) {
+                    // Continue with next if no suitable field found
+                    console.warn(`Could not set edge field for power ${power.name}:`, e3)
+                }
+            }
+        }
+    })
+
+    // Fallback for discipline-based system (keep for compatibility with vampire sheets)
+    const powersByDiscipline = (character.disciplines || []).reduce(
         (acc: any, p: any) => {
-            const type = p.discipline || "Edge"
-            if (!acc[type]) acc[type] = []
-            acc[type].push(p)
+            if (!acc[p.discipline]) acc[p.discipline] = []
+            acc[p.discipline].push(p)
             return acc
         },
         {} as any
     )
-    
-    for (const [typeIndex, powers] of Object.values(powersByType).entries()) {
-        const di = typeIndex + 1
+    for (const [disciplineIndex, powers] of Object.values(powersByDiscipline).entries()) {
+        const di = disciplineIndex + 1
         const powersArray = powers as any[]
         try {
-            form.getTextField(`Disc${di}`)?.setText(upcase(powersArray[0].discipline || "Edge"))
+            form.getTextField(`Disc${di}`)?.setText(upcase(powersArray[0].discipline))
             for (const [powerIndex, power] of powersArray.entries()) {
                 const pi = powerIndex + 1
                 form.getTextField(`Disc${di}_Ability${pi}`)?.setText(getEdgeText(power))
@@ -311,14 +435,7 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
                 form.getCheckBox(`Disc${di}-${pi}`)?.check()
             }
         } catch (e) {
-            // If discipline fields don't exist, try edge fields
-            try {
-                const edgeNameField = `Edge.${typeIndex}.0.0`
-                form.getTextField(edgeNameField)?.setText(getEdgeText(powersArray[0]))
-                form.getTextField(edgeNameField)?.disableRichFormatting()
-            } catch (e2) {
-                // Skip if no suitable field found
-            }
+            // If discipline fields don't exist, skip
         }
     }
 
@@ -326,9 +443,31 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     const meritsAndFlaws = [...character.merits, ...character.flaws]
     meritsAndFlaws.forEach(({ name, level, summary }, i) => {
         const fieldNum = i + 1
-        form.getTextField(`Merit${fieldNum}`)?.setText(`${name}: ${summary}`)
-        for (let l = 1; l <= level; l++) {
-            form.getCheckBox(`Merit${fieldNum}-${l}`)?.check()
+        try {
+            // Try Hunter/Werewolf merit field format first
+            form.getTextField(`Merit${fieldNum}`)?.setText(`${name}: ${summary}`)
+            // Mark the appropriate level dots
+            for (let l = 1; l <= level; l++) {
+                try {
+                    form.getCheckBox(`Merit${fieldNum}-${l}`)?.check()
+                } catch (e) {
+                    // If checkbox doesn't exist, skip
+                }
+            }
+        } catch (e) {
+            // Try alternative field naming
+            try {
+                form.getTextField(`Background${fieldNum}`)?.setText(`${name}: ${summary}`)
+                for (let l = 1; l <= level; l++) {
+                    try {
+                        form.getCheckBox(`Background${fieldNum}-${l}`)?.check()
+                    } catch (e2) {
+                        // If checkbox doesn't exist, skip
+                    }
+                }
+            } catch (e2) {
+                // No suitable merit/background field found
+            }
         }
     })
 
@@ -337,29 +476,280 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         `${name}: ${conviction}\n${description}`
     ).join("\n\n")
     
-    form.getTextField("Convictions")?.setText(touchstonesText)
+    try {
+        form.getTextField("Convictions")?.setText(touchstonesText)
+    } catch (e) {
+        // Try alternative field names for convictions
+        try {
+            form.getTextField("Touchstones")?.setText(touchstonesText)
+        } catch (e2) {
+            try {
+                form.getTextField("Motivations")?.setText(touchstonesText)
+            } catch (e3) {
+                // No suitable field found
+            }
+        }
+    }
 
-    // Character details - simplified approach
-    if (character.appearance) {
-        form.getTextField("pcDescription")?.setText(character.appearance)
+    // Character details - map to appropriate PDF fields
+    let additionalInfoText = ""
+    
+    // Redemption
+    try {
+        form.getTextField("Redemption")?.setText(character.redemption || "")
+    } catch (e) {
+        try {
+            form.getTextField("redemption")?.setText(character.redemption || "")
+        } catch (e2) {
+            try {
+                form.getTextField("Notes2")?.setText(character.redemption || "")
+            } catch (e3) {
+                if (character.redemption) {
+                    additionalInfoText += `Redemption: ${character.redemption}\n\n`
+                }
+            }
+        }
     }
     
-    if (character.notes) {
-        form.getTextField("PC_Notes")?.setText(character.notes)
+    // Appearance
+    try {
+        form.getTextField("sge")?.setText(character.appearance || "")
+    } catch (e) {
+        try {
+            form.getTextField("Appearance")?.setText(character.appearance || "")
+        } catch (e2) {
+            try {
+                form.getTextField("pcDescription")?.setText(character.appearance || "")
+            } catch (e3) {
+                if (character.appearance) {
+                    additionalInfoText += `Appearance: ${character.appearance}\n\n`
+                }
+            }
+        }
+    }
+    
+    // History/Background
+    try {
+        form.getTextField("pcConcept")?.setText(character.history || "")
+    } catch (e) {
+        try {
+            form.getTextField("History")?.setText(character.history || "")
+        } catch (e2) {
+            try {
+                form.getTextField("Background")?.setText(character.history || "")
+            } catch (e3) {
+                if (character.history) {
+                    additionalInfoText += `History: ${character.history}\n\n`
+                }
+            }
+        }
+    }
+    
+    // Notes
+    try {
+        form.getTextField("PC_Notes")?.setText(character.notes || "")
+    } catch (e) {
+        try {
+            form.getTextField("Notes")?.setText(character.notes || "")
+        } catch (e2) {
+            try {
+                form.getTextField("CharacterNotes")?.setText(character.notes || "")
+            } catch (e3) {
+                if (character.notes) {
+                    additionalInfoText += `Notes: ${character.notes}\n\n`
+                }
+            }
+        }
+    }
+
+    // Ambition and Desire (Hunter-specific goals)
+    let goalsText = ""
+    if (character.ambition) {
+        goalsText += `Ambition: ${character.ambition}\n`
+    }
+    if (character.desire) {
+        goalsText += `Desire: ${character.desire}\n`
+    }
+    
+    if (goalsText) {
+        try {
+            form.getTextField("Goals")?.setText(goalsText)
+        } catch (e) {
+            try {
+                form.getTextField("Ambitions")?.setText(goalsText)
+            } catch (e2) {
+                additionalInfoText += goalsText + "\n"
+            }
+        }
+    }
+    
+    // Put any remaining info in a notes field
+    if (additionalInfoText.trim()) {
+        try {
+            form.getTextField("touchstoneNotes")?.setText(additionalInfoText.trim())
+        } catch (e) {
+            try {
+                form.getTextField("AdditionalNotes")?.setText(additionalInfoText.trim())
+            } catch (e2) {
+                // Append to convictions as last resort
+                const combinedText = touchstonesText + (additionalInfoText ? `\n\n--- Additional Info ---\n${additionalInfoText.trim()}` : "")
+                try {
+                    form.getTextField("Convictions")?.setText(combinedText)
+                } catch (e3) {
+                    // No suitable field found
+                }
+            }
+        }
     }
 
     // Experience - use character experience value directly
     const experience = character.experience || 0
-    form.getTextField("tEXP")?.setText(`${experience} XP`)
+    try {
+        form.getTextField("tEXP")?.setText(`${experience} XP`)
+    } catch (e) {
+        // Experience field doesn't exist or has issues
+    }
 
-    // Fixes bug where text that is too long for field doesn't show until clicked
-    // see https://github.com/Hopding/pdf-lib/issues/569#issuecomment-1087328416 and https://stackoverflow.com/questions/73058238/some-pdf-textfield-content-not-visible-until-clicked
-    form.acroForm.dict.set(PDFName.of("NeedAppearances"), PDFBool.True)
+    // Disable rich formatting on all text fields to prevent rich text errors
+    const disableRichFormattingOnAllFields = () => {
+        try {
+            const fields = form.getFields()
+            let processedCount = 0
+            let skippedCount = 0
+            
+            fields.forEach(field => {
+                try {
+                    const fieldName = field.getName()
+                    // Skip known problematic rich text fields with more patterns
+                    const problematicFields = [
+                        'chronicleTenets', 'chronicleTenents', 'ChronicleTeN.0.0.1',
+                        'chronicle', 'Chronicle', 'chronicleTenants', 'ChronicleText',
+                        'chronicletenets', 'CHRONICLETENETS', 'ChronicleRichText',
+                        'Tenets', 'TENETS', 'tenets', 'tenents'
+                    ]
+                    
+                    // Use both exact matching and pattern matching
+                    const isProblematicField = problematicFields.some(pf => 
+                        fieldName.toLowerCase() === pf.toLowerCase() ||
+                        fieldName.toLowerCase().includes(pf.toLowerCase()) ||
+                        pf.toLowerCase().includes(fieldName.toLowerCase())
+                    )
+                    
+                    if (isProblematicField) {
+                        console.warn(`Skipping problematic rich text field: ${fieldName}`)
+                        skippedCount++
+                        return
+                    }
+                    
+                    if (field.constructor.name === 'PDFTextField') {
+                        // More thorough rich text detection
+                        try {
+                            // Try multiple detection methods
+                            const fieldAsAny = field as any
+                            
+                            // Method 1: Try to get text
+                            fieldAsAny.getText?.()
+                            
+                            // Method 2: Check for rich text properties
+                            const hasRichText = fieldAsAny.acroField?.dict?.has?.(PDFName.of('RV')) ||
+                                              fieldAsAny.dict?.has?.(PDFName.of('RV')) ||
+                                              fieldAsAny.isRichText === true
+                            
+                            if (hasRichText) {
+                                console.warn(`Detected rich text field via properties: ${fieldName}`)
+                                skippedCount++
+                                return
+                            }
+                            
+                            // If all checks pass, disable rich formatting
+                            fieldAsAny.disableRichFormatting?.()
+                            processedCount++
+                            
+                        } catch (richTextError) {
+                            console.warn(`Detected rich text field via error: ${fieldName}`)
+                            skippedCount++
+                            return
+                        }
+                    }
+                } catch (e) {
+                    // Skip fields that can't be processed
+                    console.warn(`Could not process field: ${e}`)
+                    skippedCount++
+                }
+            })
+            
+            console.log(`Rich formatting processing: ${processedCount} processed, ${skippedCount} skipped`)
+            
+        } catch (e) {
+            // If we can't iterate fields, skip this step
+            console.warn("Could not iterate form fields:", e)
+        }
+    }
 
-    // Fixes embedded font not being applied on form fields
-    form.updateFieldAppearances(customFont)
+    disableRichFormattingOnAllFields()
 
-    return await pdfDoc.save({ updateFieldAppearances: true })
+    // Alternative approach: Skip field appearance updates entirely to avoid rich text issues
+    // This ensures PDF generation works even with problematic rich text fields
+    try {
+        // Set NeedAppearances flag so PDF viewers will render fields properly
+        form.acroForm.dict.set(PDFName.of("NeedAppearances"), PDFBool.True)
+        console.log("Set NeedAppearances flag - PDF viewer will handle field rendering")
+    } catch (e) {
+        console.warn("Could not set NeedAppearances flag:", e)
+    }
+
+    // Optional: Try minimal field processing only if explicitly requested
+    const tryFieldAppearanceUpdate = false // Set to true to attempt field updates
+    
+    if (tryFieldAppearanceUpdate) {
+        try {
+            // Instead of trying to update all field appearances, manually update only safe fields
+            const fields = form.getFields()
+            let updatedFieldCount = 0
+            
+            fields.forEach(field => {
+                try {
+                    const fieldName = field.getName()
+                    const problematicPatterns = [
+                        'chronicleten', 'chronicle', 'tenets', 'tenents', 'richtext'
+                    ]
+                    
+                    // Skip any field that matches problematic patterns
+                    if (problematicPatterns.some(pattern => 
+                        fieldName.toLowerCase().includes(pattern.toLowerCase())
+                    )) {
+                        console.warn(`Skipping field appearance update for: ${fieldName}`)
+                        return
+                    }
+                    
+                    // Try to update individual field appearance
+                    if (field.constructor.name === 'PDFTextField') {
+                        try {
+                            // Test if field can be read (detect rich text)
+                            ;(field as any).getText?.()
+                            // If successful, try to update appearance
+                            ;(field as any).updateAppearances?.(customFont)
+                            updatedFieldCount++
+                        } catch (richTextError) {
+                            console.warn(`Rich text field detected, skipping: ${fieldName}`)
+                        }
+                    }
+                } catch (e) {
+                    // Skip problematic individual fields
+                    console.warn(`Could not process individual field: ${e}`)
+                }
+            })
+            
+            console.log(`Successfully updated appearances for ${updatedFieldCount} fields`)
+            
+        } catch (e) {
+            console.warn("Could not update field appearances due to rich text fields:", e)
+        }
+    } else {
+        console.log("Skipping field appearance updates to avoid rich text field issues")
+    }
+
+    return await pdfDoc.save({ updateFieldAppearances: false })
 }
 
 export const downloadCharacterSheet = async (character: Character) => {
