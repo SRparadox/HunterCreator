@@ -1,5 +1,5 @@
 <h1 align="center">
-  <div>🐺 Howl 🌙</div>
+  <div>🎯 Hunt �</div>
   <div style="font-size: 20px;">A 'Hunter: The Reckoning' 5th Edition Character Creator</div>
 </h1>
 
@@ -9,7 +9,7 @@ Quickly and easily create your Hunter character & export to printable, editable 
 
 The creator runs entirely in your browser, no files are sent to a server.
 
-This is a 'Hunter: The Reckoning' character creation tool for beginners. It is intentionally streamlined and limited to creating a common type of character following the rules from the source book. You can download your character into a printable PDF when you're done and also save it to a local JSON file that you can load into this web app to continue editing.
+This is a 'Hunter: The Reckoning' character creation tool for beginners. It is intentionally streamlined and limited to creating a common type of Hunter character following the rules from the source book. You can download your character into a printable PDF when you're done and also save it to a local JSON file that you can load into this web app to continue editing.
 
 This was possible with the groundwork and structure provided by odin_dev
 

@@ -2,7 +2,6 @@ import { notifications } from "@mantine/notifications"
 import fontkit from "@pdf-lib/fontkit"
 import { PDFBool, PDFDocument, PDFFont, PDFForm, PDFName } from "pdf-lib"
 import { Character } from "../data/Character"
-import { tribes } from "../data/Tribes"
 import { SkillsKey, skillsKeySchema } from "../data/Skills"
 import { attributesKeySchema } from "../data/Attributes"
 import { Power, Ritual } from "../data/Disciplines"
@@ -56,7 +55,7 @@ export const testTemplate = async (basePdf: string) => {
 }
 
 const downloadPdf = (fileName: string, bytes: Uint8Array) => {
-    const blob = new Blob([bytes], { type: "application/pdf" })
+    const blob = new Blob([bytes as any], { type: "application/pdf" })
     const link = document.createElement("a")
 
     link.href = window.URL.createObjectURL(blob)
@@ -228,48 +227,27 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         // Chronicle field doesn't exist in this PDF
     }
     
-    // Patron (from tribe data)
+    // Patron (simplified for Hunter)
     let patronName = ""
-    if (tribeName && tribes[tribeName as keyof typeof tribes]) {
-        const tribe = tribes[tribeName as keyof typeof tribes]
-        patronName = tribe.patron || ""
-    }
     try {
         form.getTextField("Patron")?.setText(patronName)
     } catch (e) {
         // Patron field doesn't exist in this PDF
     }
     
-    // For werewolf, we use ban and favor instead of bane and compulsion
-    if (tribeName && tribes[tribeName as keyof typeof tribes]) {
-        const tribe = tribes[tribeName as keyof typeof tribes]
-        const banText = tribe.ban
-        const favorText = tribe.favor
-        const patronText = tribe.patron || ""
-        
-        // Try to set tribe-specific fields, fall back to clan fields if werewolf sheet doesn't have them yet
+    // For Hunter, we don't have tribe-specific ban/favor data
+    // These fields may be used for Hunter-specific information later
+    try {
+        form.getTextField("TribeBan")?.setText("")
+        form.getTextField("TribeFavor")?.setText("")
+        form.getTextField("Patron")?.setText("")
+    } catch (e) {
+        // Fallback to original clan fields if werewolf sheet isn't ready
         try {
-            form.getTextField("TribeBan")?.setText(banText)
-            form.getTextField("TribeFavor")?.setText(favorText)
-            form.getTextField("Patron")?.setText(patronText)
-        } catch (e) {
-            // Fallback to original clan fields if werewolf sheet isn't ready
-            try {
-                form.getTextField("ClanBane")?.setText(banText)
-                form.getTextField("ClanCompulsion")?.setText(favorText)
-            } catch (e2) {
-                // If neither work, just continue
-            }
-        }
-        
-        // Try to set renown information
-        try {
-            const renownField = `${tribe.renownType}Renown`
-            const existingRenown = form.getTextField(renownField)?.getText() || "0"
-            const newRenown = parseInt(existingRenown) + tribe.renownDots
-            form.getTextField(renownField)?.setText(newRenown.toString())
-        } catch (e) {
-            // If renown fields don't exist yet, continue
+            form.getTextField("ClanBane")?.setText("")
+            form.getTextField("ClanCompulsion")?.setText("")
+        } catch (e2) {
+            // If neither work, just continue
         }
     }
 
@@ -281,28 +259,35 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     }
 
     // Gifts and Rites - using new field naming pattern
-    const getGiftText = (power: Power | Ritual | Gift) => {
-        let text = power.name + ": " + power.summary
+    const getGiftText = (power: any) => {
+        let text = power.name + ": "
         
-        // Handle different power types
-        if ('cost' in power) {
+        // Handle different power types and their summary/description fields
+        if (power.summary) {
+            text += power.summary
+        } else if (power.description) {
+            text += power.description
+        }
+        
+        // Handle different cost/system information
+        if (power.cost) {
             // It's a Gift
             text += ` // ${power.cost}`
-        } else if ('rouseChecks' in power && power.rouseChecks > 0) {
+        } else if (power.rouseChecks && power.rouseChecks > 0) {
             // It's a Discipline Power
             text += ` // ${power.rouseChecks} rouse check${power.rouseChecks > 1 ? "s" : ""}`
         }
 
-        if ('requiredTime' in power && 'ingredients' in power) {
+        if (power.system && power.ingredients) {
             // It's a ritual
-            text += ` // requires: ${power.ingredients}; ${power.requiredTime}`
+            text += ` // requires: ${power.ingredients}; ${power.system}`
         }
 
         return text
     }
 
-    const getDicePoolText = (power: Power | Ritual | Gift) => {
-        return power.dicePool || ""
+    const getDicePoolText = (power: any) => {
+        return power.dicePool || power.dicePools || power.pool || ""
     }
 
     // Combine gifts and rites into a single array for unified numbering
@@ -335,26 +320,27 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
 
     // Fallback for older discipline-based system (keep for compatibility)
     const powersByDiscipline = (character.disciplines || []).reduce(
-        (acc, p) => {
+        (acc: any, p: any) => {
             if (!acc[p.discipline]) acc[p.discipline] = []
             acc[p.discipline].push(p)
             return acc
         },
-        {} as Record<DisciplineName, Power[]>
+        {} as any
     )
     for (const [disciplineIndex, powers] of Object.values(powersByDiscipline).entries()) {
         const di = disciplineIndex + 1
+        const powersArray = powers as any[]
         try {
-            form.getTextField(`Disc${di}`)?.setText(upcase(powers[0].discipline))
-            for (const [powerIndex, power] of powers.entries()) {
+            form.getTextField(`Disc${di}`)?.setText(upcase(powersArray[0].discipline))
+            for (const [powerIndex, power] of powersArray.entries()) {
                 const pi = powerIndex + 1
                 form.getTextField(`Disc${di}_Ability${pi}`)?.setText(getGiftText(power))
                 form.getTextField(`Disc${di}_Ability${pi}`)?.disableRichFormatting()
                 form.getCheckBox(`Disc${di}-${pi}`)?.check()
             }
-            if (powers[0].discipline === "blood sorcery") {
+            if (powersArray[0].discipline === "blood sorcery") {
                 for (const [ritualIndex, ritual] of (character.rituals || []).entries()) {
-                    const ri = powers.length + ritualIndex + 1
+                    const ri = powersArray.length + ritualIndex + 1
                     form.getTextField(`Disc${di}_Ability${ri}`)?.setText(getGiftText(ritual))
                     form.getTextField(`Disc${di}_Ability${ri}`)?.disableRichFormatting()
                 }
@@ -388,12 +374,8 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     // Flavor and Bans - Add to touchstoneNotes field
     let flavorAndBansText = ""
     
-    // Add tribe flavor and ban
-    if (tribeName && tribes[tribeName as keyof typeof tribes]) {
-        const tribe = tribes[tribeName as keyof typeof tribes]
-        flavorAndBansText += `Tribe Flavor: ${tribe.favor}\n`
-        flavorAndBansText += `Tribe Ban: ${tribe.ban}\n\n`
-    }
+    // Add Hunter-specific information if available
+    // Note: This could be expanded to include Creed-specific information later
     
     // Map specific fields according to PDF structure
     

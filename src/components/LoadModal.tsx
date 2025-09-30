@@ -4,8 +4,6 @@ import { Button, Divider, Group, Modal, Stack, Text } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { Buffer } from "buffer"
 import { z } from "zod"
-import { tribes } from "~/data/Tribes"
-import { tribeNameSchema } from "~/data/NameSchemas"
 import { Character, characterSchema } from "../data/Character"
 import { getUploadFile } from "../generator/utils"
 
@@ -46,20 +44,9 @@ const LoadModal = ({ loadModalOpened, closeLoadModal, setCharacter, loadedFile }
                                 if (!parsed["rituals"]) parsed["rituals"] = [] // backwards compatibility for characters that were saved before rituals were added
                                 if (!parsed["predatorType"]["pickedMeritsAndFlaws"]) parsed["predatorType"]["pickedMeritsAndFlaws"] = [] // backwards compatibility for characters that were saved before pickedMeritsAndFlaws were added
                                 if (!parsed["availableDisciplineNames"]) {
-                                    // backwards compatibility for characters that were saved before Caitiff were added
-                                    const clanOrTribe = parsed["clan"]
-                                    let availableDisciplines: string[] = []
-                                    
-                                    // Try to parse as tribe first (new format)
-                                    try {
-                                        const tribe = tribeNameSchema.parse(clanOrTribe)
-                                        availableDisciplines = tribes[tribe].gifts
-                                    } catch (e) {
-                                        // Fall back to empty for old clan saves (no longer supported)
-                                        availableDisciplines = []
-                                    }
-
-                                    parsed["availableDisciplineNames"] = Array.from(new Set(availableDisciplines))
+                                    // backwards compatibility for characters that were saved before available disciplines were added
+                                    // For Hunter characters, we'll set this to empty and let the character creation process handle it
+                                    parsed["availableDisciplineNames"] = []
                                 }
                                 setCharacter(characterSchema.parse(parsed))
                                 closeLoadModal()
