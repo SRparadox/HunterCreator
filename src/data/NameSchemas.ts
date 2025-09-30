@@ -104,3 +104,39 @@ export const predatorTypeNameSchema = z.union([
     z.literal(""),
 ])
 export type PredatorTypeName = z.infer<typeof predatorTypeNameSchema>
+
+// Hunter: The Reckoning schemas
+export const creedNameSchema = z.union([
+    z.literal("Entrepreneurial"),
+    z.literal("Faithful"),
+    z.literal("Inquisitive"),
+    z.literal("Martial"),
+    z.literal("Underground"),
+    z.literal(""),
+])
+export type CreedName = z.infer<typeof creedNameSchema>
+
+export const driveNameSchema = z.union([
+    z.literal("Curiousity"),
+    z.literal("Vengeance"),
+    z.literal("Oath"),
+    z.literal("Greed"),
+    z.literal("Pride"),
+    z.literal("Envy"),
+    z.literal("Atonement"),
+    z.literal(""),
+])
+export type DriveName = z.infer<typeof driveNameSchema>
+
+export const edgeNameSchema = z.union([
+    z.literal("arsenal"),
+    z.literal("blessed"),
+    z.literal("fleet"),
+    z.literal("library"),
+    z.literal("net"),
+    z.literal("ordnance"),
+    z.literal("pursuit"),
+    z.literal("stake"),
+    z.literal(""),
+])
+export type EdgeName = z.infer<typeof edgeNameSchema>

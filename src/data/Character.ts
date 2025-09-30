@@ -4,7 +4,7 @@ import { riteSchema } from "./Rites"
 import { specialtySchema } from "./Specialties"
 import { skillsSchema } from "./Skills"
 import { attributesSchema } from "./Attributes"
-import { tribeNameSchema, auspiceNameSchema, giftNameSchema } from "./NameSchemas"
+import { tribeNameSchema, auspiceNameSchema, giftNameSchema, creedNameSchema, driveNameSchema, edgeNameSchema } from "./NameSchemas"
 
 export const meritFlawSchema = z.object({
     name: z.string(),
@@ -35,6 +35,12 @@ export const characterSchema = z.object({
     // Werewolf 5e specific fields
     tribe: tribeNameSchema, // Replaces 'clan'
     auspice: auspiceNameSchema, // Replaces 'predatorType'
+    
+    // Hunter: The Reckoning 5e specific fields
+    creed: creedNameSchema,
+    drive: driveNameSchema,
+    availableEdgeNames: edgeNameSchema.array(),
+    edges: powerSchema.array(), // Using same structure as gifts/disciplines
     
     // Temporary compatibility - will be removed later
     clan: tribeNameSchema, // For backward compatibility, maps to tribe
@@ -100,6 +106,12 @@ export const getEmptyCharacter = (): Character => {
         // Werewolf fields
         tribe: "",
         auspice: "",
+        
+        // Hunter fields
+        creed: "",
+        drive: "",
+        availableEdgeNames: [],
+        edges: [],
         
         // Backward compatibility
         clan: "",
