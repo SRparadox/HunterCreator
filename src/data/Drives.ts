@@ -4,108 +4,51 @@ import { DriveName, driveNameSchema } from "./NameSchemas"
 export const driveSchema = z.object({
     name: driveNameSchema,
     description: z.string(),
-    logo: z.string(),
-    shortDescription: z.string(),
-    aspirations: z.string().array(),
+    redemption: z.string(),
 })
 export type Drive = z.infer<typeof driveSchema>
 export const driveKeySchema = driveSchema.keyof()
 export type DriveKey = z.infer<typeof driveKeySchema>
 
 export const drives: Record<DriveName, Drive> = {
-    "Ambition": {
-        name: "Ambition",
-        description: "You are driven to achieve greatness, to rise above your station and make your mark on the world. Power, success, and recognition fuel your every action.",
-        logo: "", // Will need to add logo paths
-        shortDescription: "Driven to achieve greatness and power",
-        aspirations: [
-            "Gain a position of authority in an organization",
-            "Acquire significant wealth or resources",
-            "Become recognized as an expert in your field"
-        ],
+    "Curiosity": {
+        name: "Curiosity",
+        description: "The Hunter is motivated to discover everything about the quarry; learning about their target motivates them to dig deeper for each new fact.",
+        redemption: "The cell learns new information about their quarry.",
     },
-    "Compassion": {
-        name: "Compassion",
-        description: "You are motivated by empathy and the desire to help others. You cannot stand to see suffering and will go to great lengths to alleviate pain.",
-        logo: "",
-        shortDescription: "Motivated by empathy and helping others",
-        aspirations: [
-            "Save someone from a dangerous situation",
-            "Establish or support a charity or aid organization",
-            "Reconcile enemies or heal old wounds"
-        ],
+    "Vengeance": {
+        name: "Vengeance",
+        description: "The Hunter must balance the scale for the harm done to themselves or someone close to them by the supernatural.",
+        redemption: "The cell must directly or indirectly harm their quarry (or a creature similar).",
     },
-    "Destruction": {
-        name: "Destruction",
-        description: "You are compelled to tear down what you see as corrupt, false, or harmful. Sometimes destruction is necessary for renewal.",
-        logo: "",
-        shortDescription: "Compelled to tear down corruption",
-        aspirations: [
-            "Expose a major conspiracy or cover-up",
-            "Destroy a corrupt institution or organization",
-            "Eliminate a supernatural threat to humanity"
-        ],
+    "Oath": {
+        name: "Oath",
+        description: "The Hunter's words are their bond, and they must fulfill the pledge they made against the creatures of the night, stopping at nothing to achieve this.",
+        redemption: "The cell must aid the Hunter to either uphold their pledge or bring it closer to completion.",
     },
-    "Justice": {
-        name: "Justice",
-        description: "You seek to right wrongs and ensure that those who harm others face consequences. The guilty must be punished and the innocent protected.",
-        logo: "",
-        shortDescription: "Seeks to right wrongs and punish the guilty",
-        aspirations: [
-            "See a criminal brought to justice",
-            "Protect an innocent from harm",
-            "Correct a historical injustice"
-        ],
+    "Greed": {
+        name: "Greed",
+        description: "The Hunter wants what the supernatural creatures have, believing it unfair that they profit from their monstrosities.",
+        redemption: "Obtaining resources from the quarry or a creature like it.",
     },
-    "Knowledge": {
-        name: "Knowledge",
-        description: "You are driven by curiosity and the need to understand. Truth and understanding are more valuable than comfort or safety.",
-        logo: "",
-        shortDescription: "Driven by curiosity and need to understand",
-        aspirations: [
-            "Uncover a significant supernatural secret",
-            "Master a new skill or area of expertise",
-            "Document important discoveries for future generations"
-        ],
+    "Pride": {
+        name: "Pride",
+        description: "The Hunter has a burning desire to prove themselves against supernatural creatures given powers that they've never deserved. Whether it represents the unbreakable human spirit or an overly competitive nature, the Hunter will take any chance to overcome their quarry.",
+        redemption: "Directly or indirectly beating the quarry at some type of challenge.",
     },
-    "Protection": {
-        name: "Protection",
-        description: "You feel compelled to safeguard people, places, or ideals that you hold dear. You are the shield between the innocent and danger.",
-        logo: "",
-        shortDescription: "Compelled to safeguard what you hold dear",
-        aspirations: [
-            "Keep your family or friends safe from supernatural threats",
-            "Establish a safe haven for other hunters",
-            "Preserve an important location or artifact"
-        ],
+    "Envy": {
+        name: "Envy",
+        description: "The Hunter wants to join the supernatural or die trying.",
+        redemption: "Either obtain samples of the source of the quarry's power or win their favor.",
     },
-    "Revenge": {
-        name: "Revenge",
-        description: "You are motivated by the need to get back at those who have wronged you or others. Past injustices drive you forward.",
-        logo: "",
-        shortDescription: "Motivated by the need for retribution",
-        aspirations: [
-            "Track down and confront those who wronged you",
-            "Make an enemy pay for their crimes",
-            "Restore your reputation or honor"
-        ],
-    },
-    "Survival": {
-        name: "Survival",
-        description: "You are driven by the basic need to survive and protect your way of life. In a world full of monsters, simply staying alive is victory enough.",
-        logo: "",
-        shortDescription: "Driven by the need to survive",
-        aspirations: [
-            "Escape from a dangerous situation",
-            "Secure resources needed for survival",
-            "Eliminate a threat to your continued existence"
-        ],
+    "Atonement": {
+        name: "Atonement",
+        description: "The Hunter helped a monster in the past, knowingly or unknowingly, and now seeks restitution. They are aware that their acts have injured innocent people and are willing to put themselves in danger to repay this debt.",
+        redemption: "The cell must defend someone, directly or indirectly, from the quarry (or a similar creature) by putting themselves in danger and taking the hit for them. Alternately, the Hunter can atone for their transgression by helping a cellie.",
     },
     "": {
         name: "",
         description: "",
-        logo: "",
-        shortDescription: "",
-        aspirations: [],
+        redemption: "",
     },
 }

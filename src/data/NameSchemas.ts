@@ -117,7 +117,7 @@ export const creedNameSchema = z.union([
 export type CreedName = z.infer<typeof creedNameSchema>
 
 export const driveNameSchema = z.union([
-    z.literal("Curiousity"),
+    z.literal("Curiosity"),
     z.literal("Vengeance"),
     z.literal("Oath"),
     z.literal("Greed"),

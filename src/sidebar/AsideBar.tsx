@@ -12,13 +12,12 @@ export type AsideBarProps = {
 const AsideBar = ({ selectedStep, setSelectedStep, character }: AsideBarProps) => {
     // const smallScreen = globals.isSmallScreen
     const stepperKeys = [
-        "clan", // Maps to tribe
+        "creed", // Hunter Creed selection
         "attributes",
         "skills", 
-        "auspice", // Werewolf auspice selection
+        "drive", // Hunter Drive selection
         "name",
-        "disciplines", // Maps to gifts
-        "rites", // Werewolf rites
+        "edges", // Hunter Edges
         "touchstones",
         "merits",
     ] as (keyof Character)[]
@@ -47,10 +46,12 @@ const AsideBar = ({ selectedStep, setSelectedStep, character }: AsideBarProps) =
                     {" "}
                 </Stepper.Step>
                 {stepperKeys.map((title) => {
-                    let displayTitle = title === "clan" ? "Tribe" : upcase(title as string)
-                    if (title === "auspice") displayTitle = "Auspice"
-                    if (title === "disciplines") displayTitle = "Gifts"
-                    if (title === "rites") displayTitle = "Rites"
+                    let displayTitle = upcase(title as string)
+                    if (title === "creed") displayTitle = "Creed"
+                    if (title === "drive") displayTitle = "Drive"
+                    if (title === "edges") displayTitle = "Edges"
+                    if (title === "touchstones") displayTitle = "Touchstones"
+                    if (title === "merits") displayTitle = "Merits & Flaws"
                     
                     return (
                         <Stepper.Step
@@ -63,7 +64,7 @@ const AsideBar = ({ selectedStep, setSelectedStep, character }: AsideBarProps) =
                         </Stepper.Step>
                     )
                 })}
-                <Stepper.Step key={"Final"} label={"Final"} description="" disabled={isDefault(character, "disciplines") || isDefault(character, "rites")}>
+                <Stepper.Step key={"Final"} label={"Final"} description="" disabled={isDefault(character, "edges")}>
                     {" "}
                 </Stepper.Step>
             </Stepper>

@@ -139,7 +139,7 @@ const DrivePicker = ({ character, setCharacter, nextStep }: DrivePickerProps) =>
                     <ScrollableDescription text={drives[drive].description} drive={drive} />
                     
                     <Text size="xs" ta="center" c="yellow" mt="xs">
-                        <b>Focus:</b> {drives[drive].shortDescription}
+                        <b>Redemption:</b> {drives[drive].redemption}
                     </Text>
                 </Card>
             </Grid.Col>
@@ -160,31 +160,39 @@ const DrivePicker = ({ character, setCharacter, nextStep }: DrivePickerProps) =>
 
             <ScrollArea h={height - 215} w={"100%"} p={20}>
                 <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.blue[6]}>
-                    Protective Drives
+                    Knowledge-Seeking Drives
                 </Text>
                 <Grid grow m={0}>
-                    {["Martial"]
+                    {["Curiosity"]
                         .map((d) => driveNameSchema.parse(d))
                         .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.blue[8], 0.9)))}
                 </Grid>
 
                 <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.red[8]}>
-                    Aggressive Drives
+                    Retribution Drives
                 </Text>
                 <Grid grow m={0}>
-                    {["Martial"]
+                    {["Vengeance", "Oath"]
                         .map((d) => driveNameSchema.parse(d))
                         .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.red[8], 0.9)))}
                 </Grid>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.grape[7]}>
-                    Personal Drives
+                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.green[7]}>
+                    Self-Serving Drives
                 </Text>
-
                 <Grid grow m={0}>
-                    {["Martial"]
+                    {["Greed", "Pride", "Envy"]
                         .map((d) => driveNameSchema.parse(d))
-                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.grape[8], 0.9)))}
+                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.green[8], 0.9)))}
+                </Grid>
+
+                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.purple[7]}>
+                    Redemptive Drives
+                </Text>
+                <Grid grow m={0}>
+                    {["Atonement"]
+                        .map((d) => driveNameSchema.parse(d))
+                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.purple[8], 0.9)))}
                 </Grid>
             </ScrollArea>
         </div>
