@@ -20,6 +20,8 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
     const [appearance, setAppearance] = useState(character.appearance || "")
     const [history, setHistory] = useState(character.history || "")
     const [notes, setNotes] = useState(character.notes || "")
+    const [ambition, setAmbition] = useState(character.ambition || "")
+    const [desire, setDesire] = useState(character.desire || "")
 
     return (
         <div>
@@ -32,7 +34,7 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
                     style={{ width: "300px" }}
                     value={name}
                     onChange={(event) => setName(event.currentTarget.value)}
-                    placeholder="Luna Nightclaw"
+                    placeholder="Sarah Mitchell"
                     label="Character Name"
                 />
 
@@ -51,16 +53,34 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
                     style={{ width: "300px" }}
                     value={chronicle}
                     onChange={(event) => setChronicle(event.currentTarget.value)}
-                    placeholder="The Howling Stones Chronicle"
+                    placeholder="Night Hunt Chronicle"
                     label="Chronicle"
                     description="The name of your story/campaign"
+                />
+
+                <TextInput
+                    style={{ width: "300px" }}
+                    value={ambition}
+                    onChange={(event) => setAmbition(event.currentTarget.value)}
+                    placeholder="Become the most feared hunter in the city"
+                    label="Ambition"
+                    description="Your character's long-term goal or aspiration"
+                />
+
+                <TextInput
+                    style={{ width: "300px" }}
+                    value={desire}
+                    onChange={(event) => setDesire(event.currentTarget.value)}
+                    placeholder="To protect innocent people from supernatural threats"
+                    label="Desire"
+                    description="What your character wants most deeply"
                 />
 
                 <Textarea
                     style={{ width: "300px" }}
                     value={appearance}
                     onChange={(event) => setAppearance(event.currentTarget.value)}
-                    placeholder="Tall and lean with silver-streaked hair, piercing blue eyes, and ritual scars across their arms"
+                    placeholder="A tall woman in her thirties with determined eyes and calloused hands, often wearing a worn leather jacket"
                     label="Appearance"
                     description="Physical description of your character"
                     autosize
@@ -71,7 +91,7 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
                     style={{ width: "300px" }}
                     value={history}
                     onChange={(event) => setHistory(event.currentTarget.value)}
-                    placeholder="Born in the city but called to the wild during their First Change. Trained by the Ghost Council elders..."
+                    placeholder="Former police detective who discovered the supernatural world during a case that went horribly wrong..."
                     label="History"
                     description="Your character's background and past"
                     autosize
@@ -82,7 +102,7 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
                     style={{ width: "300px" }}
                     value={notes}
                     onChange={(event) => setNotes(event.currentTarget.value)}
-                    placeholder="Has a fear of silver, prefers to hunt at night, speaks to spirits regularly..."
+                    placeholder="Has trust issues with authority, prefers to work alone, keeps a journal of supernatural encounters..."
                     label="Notes"
                     description="Additional character notes and details"
                     autosize
@@ -101,7 +121,9 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
                             chronicle, 
                             appearance, 
                             history, 
-                            notes
+                            notes,
+                            ambition,
+                            desire
                         })
                         nextStep()
                     }}

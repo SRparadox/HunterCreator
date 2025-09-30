@@ -1,4 +1,4 @@
-import { Button, Card, Center, Grid, Group, ScrollArea, Text, Title, useMantineTheme, Stack } from "@mantine/core"
+import { Accordion, Button, Card, Center, Grid, Group, ScrollArea, Text, Title, useMantineTheme, Stack, Box } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { useEffect, useState } from "react"
 import ReactGA from "react-ga4"
@@ -21,7 +21,7 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
 
     const theme = useMantineTheme()
     const [selectedEdges, setSelectedEdges] = useState<EdgeName[]>([])
-    const maxEdges = 3 // Typical starting number for Hunter
+    const maxEdges = 3
 
     useEffect(() => {
         // Initialize selected edges from character
@@ -31,19 +31,21 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
     }, [character.edges])
 
     const handleEdgeToggle = (edgeName: EdgeName) => {
-        const isSelected = selectedEdges.includes(edgeName)
-        let newSelected: EdgeName[]
-
-        if (isSelected) {
-            newSelected = selectedEdges.filter(e => e !== edgeName)
+        let newSelected = [...selectedEdges]
+        
+        if (selectedEdges.includes(edgeName)) {
+            // Remove the edge
+            newSelected = newSelected.filter(e => e !== edgeName)
         } else {
+            // Add the edge if we haven't reached the limit
             if (selectedEdges.length < maxEdges) {
-                newSelected = [...selectedEdges, edgeName]
+                newSelected.push(edgeName)
             } else {
+                // Show notification that limit is reached
                 notifications.show({
-                    title: "Maximum Edges Reached",
-                    message: `You can only select ${maxEdges} edges`,
-                    color: "yellow",
+                    title: "Edge Limit Reached",
+                    message: `You can only select ${maxEdges} edges. Remove one first.`,
+                    color: "orange"
                 })
                 return
             }
@@ -51,7 +53,7 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
 
         setSelectedEdges(newSelected)
         
-        // Convert to power format for consistency with gifts/disciplines
+        // Convert to power format for consistency
         const edgePowers = newSelected.map(edge => ({
             name: `${edge.charAt(0).toUpperCase() + edge.slice(1)} Edge`,
             description: edges[edge].description,
@@ -69,151 +71,220 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
         })
     }
 
-    const createEdgePick = (edgeName: EdgeName, color: string) => {
+    const createEdgeCard = (edgeName: EdgeName, categoryColor: string) => {
         const isSelected = selectedEdges.includes(edgeName)
         const isAvailable = character.availableEdgeNames.includes(edgeName)
-        const bgColor = isSelected 
-            ? (theme.fn?.linearGradient ? theme.fn.linearGradient(0, color, theme.colors?.green?.[7] || '#51cf66') : `linear-gradient(0deg, ${color}, #51cf66)`)
-            : (theme.fn?.linearGradient ? theme.fn.linearGradient(0, "rgba(26, 27, 30, 0.90)", color) : `linear-gradient(0deg, rgba(26, 27, 30, 0.90), ${color})`)
-
+        
         return (
-            <Grid.Col key={edgeName} span={6}>
-                <Card
-                    className="hoverCard"
-                    shadow="sm"
-                    padding="lg"
-                    radius="md"
-                    h={280}
-                    style={{ 
-                        background: bgColor, 
-                        cursor: isAvailable ? "pointer" : "not-allowed",
-                        opacity: isAvailable ? 1 : 0.5,
-                        border: isSelected ? `2px solid ${theme.colors?.green?.[5] || '#69db7c'}` : "2px solid transparent"
-                    }}
-                    onClick={() => {
-                        if (isAvailable) {
-                            handleEdgeToggle(edgeName)
-                        }
-                    }}
-                >
-                    <Card.Section>
-                        <Center pt={10}>
-                            <div style={{ 
-                                height: 80, 
-                                width: 80, 
-                                backgroundColor: isSelected ? (theme.colors?.green?.[6] || '#51cf66') : (theme.colors?.gray?.[6] || '#868e96'), 
-                                borderRadius: '50%', 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center' 
-                            }}>
-                                <Text size="lg" weight={700}>{edgeName.charAt(0).toUpperCase()}</Text>
-                            </div>
-                        </Center>
-                    </Card.Section>
-
-                    <Center>
-                        <Title order={4} p="sm">{edgeName.charAt(0).toUpperCase() + edgeName.slice(1)}</Title>
-                    </Center>
-
-                    <Stack spacing="xs">
-                        <Text size="sm" ta="center" style={{ minHeight: 60 }}>
-                            {edges[edgeName].description}
-                        </Text>
-                        
-                        <Text size="xs" ta="center" c="blue">
-                            <b>Type:</b> {edges[edgeName].type}
-                        </Text>
-                        
-                        {!isAvailable && (
-                            <Text size="xs" ta="center" c="red">
-                                Not available for your creed
-                            </Text>
+            <Card
+                key={edgeName}
+                className="hoverCard"
+                shadow="sm"
+                padding="md"
+                radius="md"
+                style={{ 
+                    cursor: isAvailable ? "pointer" : "not-allowed",
+                    opacity: isAvailable ? 1 : 0.5,
+                    border: isSelected ? `3px solid ${theme.colors?.green?.[5] || '#69db7c'}` : "2px solid transparent",
+                    backgroundColor: isSelected 
+                        ? (theme.colors?.green?.[1] || '#ebfbee')
+                        : (theme.colorScheme === 'dark' ? theme.colors?.dark?.[6] || '#2c2e33' : theme.white)
+                }}
+                onClick={() => {
+                    if (isAvailable) {
+                        handleEdgeToggle(edgeName)
+                    }
+                }}
+            >
+                <Stack spacing="xs">
+                    <Group position="apart" align="center">
+                        <Title order={5} style={{ color: categoryColor }}>
+                            {edgeName.charAt(0).toUpperCase() + edgeName.slice(1)}
+                        </Title>
+                        {isSelected && (
+                            <Box
+                                style={{
+                                    width: 20,
+                                    height: 20,
+                                    borderRadius: '50%',
+                                    backgroundColor: theme.colors?.green?.[6] || '#51cf66',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <Text size="xs" color="white" weight={700}>✓</Text>
+                            </Box>
                         )}
-                    </Stack>
-                </Card>
-            </Grid.Col>
+                    </Group>
+                    
+                    <Text size="sm" style={{ minHeight: 60 }}>
+                        {edges[edgeName].description}
+                    </Text>
+                    
+                    {!isAvailable && (
+                        <Text size="xs" c="red" style={{ fontStyle: 'italic' }}>
+                            Not available for your creed
+                        </Text>
+                    )}
+                </Stack>
+            </Card>
         )
     }
 
+    // Categorize edges based on the new system
     const availableEdges = Object.keys(edges).filter(edge => edge !== "") as EdgeName[]
-    const physicalEdges = availableEdges.filter(edge => edges[edge].type === "Physical")
-    const mentalEdges = availableEdges.filter(edge => edges[edge].type === "Mental")
-    const socialEdges = availableEdges.filter(edge => edges[edge].type === "Social")
-    const supernaturalEdges = availableEdges.filter(edge => edges[edge].type === "Supernatural")
+    
+    // Assets: Physical resources and equipment
+    const assetEdges = availableEdges.filter(edge => 
+        ['arsenal', 'fleet', 'ordnance'].includes(edge)
+    )
+    
+    // Aptitudes: Mental abilities and knowledge
+    const aptitudeEdges = availableEdges.filter(edge => 
+        ['library', 'pursuit', 'stake'].includes(edge)
+    )
+    
+    // Endowments: Supernatural abilities and connections
+    const endowmentEdges = availableEdges.filter(edge => 
+        ['blessed', 'net'].includes(edge)
+    )
+    
+    // Catchall for any other edges
+    const otherEdges = availableEdges.filter(edge => 
+        !assetEdges.includes(edge) && 
+        !aptitudeEdges.includes(edge) && 
+        !endowmentEdges.includes(edge)
+    )
 
     const height = globals.viewportHeightPx
+    
     return (
         <div style={{ height: height - 250 }}>
-            <Text fz={"30px"} ta={"center"}>
-                Pick your <b>Edges</b>
+            <Text fz={"30px"} ta={"center"} mb="md">
+                Choose Your <b>Edges</b>
             </Text>
 
-            <Text ta="center" fz="xl" fw={700} c="orange">
-                Edges ({selectedEdges.length}/{maxEdges})
+            <Text ta="center" fz="xl" fw={700} c="orange" mb="xs">
+                Selected: {selectedEdges.length}/{maxEdges}
             </Text>
-            <hr color="#fd7e14" />
+            
+            <Text ta="center" size="sm" c="dimmed" mb="lg">
+                Edges represent your character's special resources, abilities, and advantages in the hunt.
+            </Text>
 
-            <Center mb="md">
-                <Group>
-                    <Text size="sm" c="dimmed">
-                        Select {maxEdges} edges that represent your character's special abilities and resources
-                    </Text>
-                    <Button 
-                        disabled={selectedEdges.length === 0}
-                        onClick={nextStep}
-                        color="green"
-                        size="sm"
-                    >
-                        Continue ({selectedEdges.length}/{maxEdges})
-                    </Button>
-                </Group>
+            <Center mb="lg">
+                <Button 
+                    disabled={selectedEdges.length === 0}
+                    onClick={nextStep}
+                    color="green"
+                    size="md"
+                    style={{ minWidth: 200 }}
+                >
+                    Continue with {selectedEdges.length} Edge{selectedEdges.length !== 1 ? 's' : ''}
+                </Button>
             </Center>
 
-            <ScrollArea h={height - 300} w={"100%"} p={20}>
-                {physicalEdges.length > 0 && (
-                    <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.red?.[6] || '#fa5252'}>
-                            Physical Edges
-                        </Text>
-                        <Grid grow m={0}>
-                            {physicalEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.red?.[8] || '#c92a2a', 0.9) : 'rgba(201, 42, 42, 0.9)'))}
-                        </Grid>
-                    </>
-                )}
+            <ScrollArea h={height - 400} w={"100%"}>
+                <Accordion multiple defaultValue={['assets', 'aptitudes', 'endowments']}>
+                    
+                    {assetEdges.length > 0 && (
+                        <Accordion.Item value="assets">
+                            <Accordion.Control>
+                                <Group>
+                                    <Title order={4} color={theme.colors?.red?.[6] || '#fa5252'}>
+                                        Assets
+                                    </Title>
+                                    <Text size="sm" c="dimmed">
+                                        Physical resources, equipment, and material advantages
+                                    </Text>
+                                </Group>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                                <Grid>
+                                    {assetEdges.map((edge) => (
+                                        <Grid.Col key={edge} span={6}>
+                                            {createEdgeCard(edge, theme.colors?.red?.[6] || '#fa5252')}
+                                        </Grid.Col>
+                                    ))}
+                                </Grid>
+                            </Accordion.Panel>
+                        </Accordion.Item>
+                    )}
 
-                {mentalEdges.length > 0 && (
-                    <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.blue?.[6] || '#339af0'}>
-                            Mental Edges
-                        </Text>
-                        <Grid grow m={0}>
-                            {mentalEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.blue?.[8] || '#1864ab', 0.9) : 'rgba(24, 100, 171, 0.9)'))}
-                        </Grid>
-                    </>
-                )}
+                    {aptitudeEdges.length > 0 && (
+                        <Accordion.Item value="aptitudes">
+                            <Accordion.Control>
+                                <Group>
+                                    <Title order={4} color={theme.colors?.blue?.[6] || '#339af0'}>
+                                        Aptitudes
+                                    </Title>
+                                    <Text size="sm" c="dimmed">
+                                        Mental abilities, knowledge, and specialized skills
+                                    </Text>
+                                </Group>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                                <Grid>
+                                    {aptitudeEdges.map((edge) => (
+                                        <Grid.Col key={edge} span={6}>
+                                            {createEdgeCard(edge, theme.colors?.blue?.[6] || '#339af0')}
+                                        </Grid.Col>
+                                    ))}
+                                </Grid>
+                            </Accordion.Panel>
+                        </Accordion.Item>
+                    )}
 
-                {socialEdges.length > 0 && (
-                    <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.green?.[6] || '#51cf66'}>
-                            Social Edges
-                        </Text>
-                        <Grid grow m={0}>
-                            {socialEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.green?.[8] || '#37b24d', 0.9) : 'rgba(55, 178, 77, 0.9)'))}
-                        </Grid>
-                    </>
-                )}
+                    {endowmentEdges.length > 0 && (
+                        <Accordion.Item value="endowments">
+                            <Accordion.Control>
+                                <Group>
+                                    <Title order={4} color={theme.colors?.grape?.[6] || '#9775fa'}>
+                                        Endowments
+                                    </Title>
+                                    <Text size="sm" c="dimmed">
+                                        Supernatural abilities and mystical connections
+                                    </Text>
+                                </Group>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                                <Grid>
+                                    {endowmentEdges.map((edge) => (
+                                        <Grid.Col key={edge} span={6}>
+                                            {createEdgeCard(edge, theme.colors?.grape?.[6] || '#9775fa')}
+                                        </Grid.Col>
+                                    ))}
+                                </Grid>
+                            </Accordion.Panel>
+                        </Accordion.Item>
+                    )}
 
-                {supernaturalEdges.length > 0 && (
-                    <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.grape?.[6] || '#9775fa'}>
-                            Supernatural Edges
-                        </Text>
-                        <Grid grow m={0}>
-                            {supernaturalEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.grape?.[8] || '#7950f2', 0.9) : 'rgba(121, 80, 242, 0.9)'))}
-                        </Grid>
-                    </>
-                )}
+                    {otherEdges.length > 0 && (
+                        <Accordion.Item value="other">
+                            <Accordion.Control>
+                                <Group>
+                                    <Title order={4} color={theme.colors?.gray?.[6] || '#868e96'}>
+                                        Other Edges
+                                    </Title>
+                                    <Text size="sm" c="dimmed">
+                                        Additional advantages and unique abilities
+                                    </Text>
+                                </Group>
+                            </Accordion.Control>
+                            <Accordion.Panel>
+                                <Grid>
+                                    {otherEdges.map((edge) => (
+                                        <Grid.Col key={edge} span={6}>
+                                            {createEdgeCard(edge, theme.colors?.gray?.[6] || '#868e96')}
+                                        </Grid.Col>
+                                    ))}
+                                </Grid>
+                            </Accordion.Panel>
+                        </Accordion.Item>
+                    )}
+
+                </Accordion>
             </ScrollArea>
         </div>
     )

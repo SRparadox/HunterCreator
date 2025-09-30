@@ -14,21 +14,14 @@ const BasicsDisplay = ({ character }: BasicsProps) => {
             <Text c="dimmed">{character.description}</Text>
 
             <Grid>
-                <Grid.Col span={4}>
-                    <Text>
-                        <b>Sire:</b>
-                    </Text>
-                    <Text>{character.sire}</Text>
-                </Grid.Col>
-
-                <Grid.Col span={4}>
+                <Grid.Col span={6}>
                     <Text>
                         <b>Ambition:</b>
                     </Text>
                     <Text>{character.ambition}</Text>
                 </Grid.Col>
 
-                <Grid.Col span={4}>
+                <Grid.Col span={6}>
                     <Text>
                         <b>Desire:</b>
                     </Text>
