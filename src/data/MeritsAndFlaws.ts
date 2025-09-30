@@ -6,41 +6,30 @@ export type MeritsAndFlaws = {
     flaws: MeritOrFlaw[]
 }
 
-export type BackgroundsData = {
-    title: string
-    backgrounds: MeritOrFlaw[]
-}
-
-// Caern Merits & Flaws
-export const caernMeritsAndFlaws: MeritsAndFlaws = {
-    title: "�️ Caern",
-    merits: [
-        { name: "Caern Access", cost: [1], summary: "The character can access a Caern belonging to another sept, as long as they do not interfere with them or put the caern in danger." },
-        { name: "Awakened Caern", cost: [5], summary: "Add one to the caern value of the first caern the character joins or finds. This Merit does not stack, it is up to the Storyteller if other members can chip in to accumulate the five dots of this Merit." }
-    ],
-    flaws: [
-        { name: "Caern Pariah", cost: [1], summary: "The character is unwelcome in any and all caerns on their turf. Either needing to pay to use them through dangerous jobs or acts or resorting to sneaking in, which can be disaster if they are caught. This does not apply to a caern whose sept you belong to, though it can be a reason for someone else to want you gone." }
-    ]
-}
-
-// Day Job Merits
-export const dayJobMerits: MeritsAndFlaws = {
-    title: "💼 Day Job",
-    merits: [
-        { name: "Day Job", cost: [1], summary: "Efforts to hide Garou nature by using the job receive a bonus die to relevant pools, such as subterfuge or persuasion." },
-        { name: "Corroborate Day Job", cost: [2], summary: "Same benefits as Day Job, but in addition the character's coworkers back up work claims. Add two dice to pools as above instead of one." }
-    ],
-    flaws: []
-}
-
 // Linguistics Merits & Flaws
 export const linguisticsMeritsAndFlaws: MeritsAndFlaws = {
     title: "🗣️ Linguistics",
     merits: [
-        { name: "Linguistics", cost: [1, 2, 3, 4, 5], summary: "Each dot of Linguistics allows the character to read, write and speak fluently in another language outside of the default two they already know, which is their birth language and the language of the setting." }
+        { name: "Linguistics", cost: [1, 2, 3, 4, 5], summary: "Each dot of Linguistics allows the character to read, write and speak fluently in another language outside of the default two they already know, which is their native language and the dominant language of the chronicle setting." },
+        { name: "Dead Tongues", cost: [2], summary: "The character adds 2 bonus dice when attempting to translate an extinct language." }
     ],
     flaws: [
-        { name: "Illiterate", cost: [2], summary: "The Character cannot read nor write and their Science and Academics Skills may not go beyond 1 dot. They cannot have a speciality in them that uses modern knowledge." }
+        { name: "Illiterate", cost: [2], summary: "The Character cannot read nor write and their Science and Academics Skills may not go beyond 1 dot. The character also cannot have a specialty that incorporates modern knowledge." },
+        { name: "El Mala Educación", cost: [2], summary: "Requires the Dead Tongues merit. The character makes some mistakes because of their lackluster education in the language. The Danger rating increases by 1 on total failures or critical results when they attempt to translate any extinct language." }
+    ]
+}
+
+// The World of Academia Merits & Flaws
+export const theWorldOfAcademiaMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🎓 The World of Academia",
+    merits: [
+        { name: "Forbidden Texts", cost: [2], summary: "The character has acquired writings from an expert. Upon choosing this merit, the character picks a monster type, and gains a 2 dice bonus on all research tests on the subject of that monster. The subject in question will most likely want the writings back." },
+        { name: "Thesis", cost: [2], summary: "The character chooses an additional Specialty, though not tied to any Skill but applying to any of them when used in a research test. The Storyteller needs to approve this specialty, which must be tied to academics and not the supernatural." },
+        { name: "Part of the Furniture", cost: [3], summary: "Once per session, when interacting with campus staff, or while on campus, the character may add 2 dice to any single pool." }
+    ],
+    flaws: [
+        { name: "Falling Grades", cost: [1], summary: "Reduce social pools by two when dealing with campus staff." },
+        { name: "Dangerous Knowledge", cost: [2], summary: "Upon purchasing this merit, the Storyteller chooses a monster type. When making research or perception-related tests on that monster type, if the result is a total failure or a critical, the Danger rating increases by 1." }
     ]
 }
 
@@ -48,55 +37,47 @@ export const linguisticsMeritsAndFlaws: MeritsAndFlaws = {
 export const looksMeritsAndFlaws: MeritsAndFlaws = {
     title: "👤 Looks",
     merits: [
-        { name: "Clement Lupus", cost: [1], summary: "The lupus form appears more dog-like than wolf-like and no human onlookers assume they are a wolf." },
         { name: "Beautiful", cost: [2], summary: "Add one die to related Social pools" },
         { name: "Stunning", cost: [4], summary: "Add two dice to related Social pools" }
     ],
     flaws: [
         { name: "Ugly", cost: [1], summary: "Lose one die from related Social pools" },
-        { name: "Repulsive", cost: [2], summary: "Lose two dice from related Social pools" },
-        { name: "Stench", cost: [1], summary: "Lose one die from seduction and similar Social pools. Lose two dice from Stealth pools against opponents who can smell unless you're upwind" },
-        { name: "Transparent", cost: [1], summary: "Lose one die from any pools requiring Subterfuge. You cannot gain dots in Subterfuge." }
+        { name: "Repulsive", cost: [2], summary: "Lose two dice from related Social pools" }
     ]
 }
 
-// Mythic Flaws
-export const mythicFlaws: MeritsAndFlaws = {
-    title: "🌟 Mythic",
+// Nutritionist Merits & Flaws
+export const nutritionistMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🍳 Nutritionist",
+    merits: [
+        { name: "Solo Cooking", cost: [1], summary: "Heal one extra Superficial Health at the beginning of a session if the Hunter has time to prepare a meal before the session begins." },
+        { name: "Cell Chef", cost: [2], summary: "The entire cell heals one extra Superficial Health at the beginning of a session if the Hunter has time to prepare a meal before the session begins. Any Hunters separated from the cell at the start of session would not receive this benefit." }
+    ],
+    flaws: [
+        { name: "Malnourished", cost: [2], summary: "The character is too busy, poor or inept to eat properly, and their Health is calculated as Stamina + 2 instead of Stamina + 3." }
+    ]
+}
+
+// Mental Feats Merits & Flaws
+export const mentalFeatsMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🧠 Mental Feats",
+    merits: [
+        { name: "Always Prepared", cost: [2], summary: "The character is efficient and practical, and adds 2 bonus dice to Preparedness dice pools (seen on page 28 of Alma Maters)." },
+        { name: "Eidetic Memory", cost: [2], summary: "The character benefits from photographic memory, only requiring a bit of study before they can recall a text or details verbatim. They gain 2 bonus dice on any test related to recall for things such as codes, directions, maps, facial recognition, formulae, and rote behaviors." }
+    ],
+    flaws: [
+        { name: "Disordered Sleep", cost: [2], summary: "Sleep catches the character at the least convenient time possible, due to their messy sleep schedule. In situations where they are studying, waiting, or keeping watch, they must roll a die, and fall asleep if the result is a failure. It is up to the Storyteller to define the impact, but it generally means the character can't complete a task, misses a detail, or is easy to ambush." }
+    ]
+}
+
+// Psychologist Traits Flaws
+export const psychologistTraitsFlaws: MeritsAndFlaws = {
+    title: "🧑‍⚕️ Psychologist Traits",
     merits: [],
     flaws: [
-        { name: "Additional Ban", cost: [2], summary: "Choose another tribe and suffer its Ban as well as the one from your actual tribe. The Storyteller can prohibit this Flaw if the second Ban would cause problems for, or lack impact in, the chronicle." }
+        { name: "Living on the Edge", cost: [2], summary: "When confronted with a risky temptation that the character hasn't done before, they suffer a two-dice penalty for all actions till they participate or the scene ends." },
+        { name: "Weak-Willed", cost: [3], summary: "Even when they are aware that someone is attempting to sway they may not use the active resistance systems to avoid the attempts." }
     ]
-}
-
-// Other Merits & Flaws
-export const otherMeritsAndFlaws: MeritsAndFlaws = {
-    title: "📋 Other",
-    merits: [],
-    flaws: [
-        { name: "Knowledge Hungry", cost: [1], summary: "Your character hungers to study a topic of your choice. When your character comes across books, tutorial videos, college seminars or other methods of learning about their chosen subject, make a Willpower test at Difficulty 3 to resist chasing their obsession." }
-    ]
-}
-
-// Rites Merits
-export const ritesMerits: MeritsAndFlaws = {
-    title: "�️ Rites",
-    merits: [
-        { name: "Improviser", cost: [1], summary: "You suffer two dice less penalties for performing Rites in suboptimal conditions" },
-        { name: "Moot Caller", cost: [2], summary: "Select 5 social rites, you've mastered them. If allowed during a moot, you can assist in any rite so long as it is performed at a moot or substantially similar gathering of Garou." },
-        { name: "Rite Master", cost: [3], summary: "Add one die to any pools involving Rite knowledge or performance" }
-    ],
-    flaws: []
-}
-
-// Safe House Merits
-export const safeHouseMerits: MeritsAndFlaws = {
-    title: "🏠 Safe House",
-    merits: [
-        { name: "Obscure Safe House", cost: [2], summary: "Efforts to locate the character and anyone with them while at the safehouse suffers a two dice penalty." },
-        { name: "Secure Safe House", cost: [2], summary: "Add two dice to relevant pools related to learning of or resisting unauthorized entry." }
-    ],
-    flaws: []
 }
 
 // Substance Abuse Flaws
@@ -104,8 +85,8 @@ export const substanceAbuseFlaws: MeritsAndFlaws = {
     title: "🍷 Substance Abuse",
     merits: [],
     flaws: [
-        { name: "Addiction", cost: [1], summary: "Unless the action is to immediately gain their drug, lose one die to all pools if in the last scene they did not indulge on the drug of their choice." },
-        { name: "Hopeless Addiction", cost: [2], summary: "Unless the action is to immediately gain their drug, lose two dice to all pools if in the last scene they did not indulge on the drug of their choice." }
+        { name: "Addiction", cost: [1], summary: "Unless the action is to immediately gain their drug, lose one die to all pools if the character did not indulge in their substance of choice during the last scene." },
+        { name: "Severe Addiction", cost: [2], summary: "Unless the action is to immediately gain their drug, lose two dice to all pools if the character did not indulge in their substance of choice during the last scene." }
     ]
 }
 
@@ -113,15 +94,11 @@ export const substanceAbuseFlaws: MeritsAndFlaws = {
 export const supernaturalSituationsMeritsAndFlaws: MeritsAndFlaws = {
     title: "🌙 Supernatural Situations",
     merits: [
-        { name: "Moon-Quickened", cost: [1], summary: "The first time the character howls at the moon during any night, they restore one point of Superficial Willpower damage." },
-        { name: "Moon-Riled", cost: [3], summary: "The first time the character howls at the moon during any night, they gain an additional point of Rage." }
+        { name: "Unseemly Aura", cost: [2], summary: "Monsters will occasionally believe the Hunter to be one of their own or another supernatural creature entirely." }
     ],
     flaws: [
-        { name: "Folkloric Bane", cost: [1], summary: "Take Aggravated Damage when touching a specific object. Examples: Holy water (as if fire), Weapon wielded by a devout believer in their faith, weapon adorned with moonstone or moonstone itself, etc" },
-        { name: "Folkloric Block", cost: [1], summary: "Must spend Willpower or move away from a specific object. Examples: Wolfbanes or other herbs with mystic properties, Holy symbols presented by a believer, silver brandished, etc" },
-        { name: "Folkloric Tell", cost: [1], summary: "The character bears an indicator that makes them appear unsettling to others, regardless if they associate it with werewolves or not. Those who feel the folkloric tell distrust them, reducing the character's dice pool by one for all Social tests other than Intimidation. Examples: People hear howls in their presence, their shadow looks wolf-like in human form and human-like in wolf form, etc" },
-        { name: "Crone's Curse", cost: [2], summary: "The character appears aged well past their prime and they have one box fewer on their health tracker than they should." },
-        { name: "Moon-Thrall", cost: [2], summary: "Whenever the character sees the moon for the first time of the night, they must change form to glabro or hispo with any required Rage checks made." }
+        { name: "Crone's Curse", cost: [3], summary: "The character appears at least a decade older than they actually are which reduces their health tracker by one." },
+        { name: "Stigmata", cost: [2], summary: "Select either Health or Willpower damage at character creation, this Flaw may also be taken a second time for the other type of damage. The Hunter bleeds from open wounds on their hands, feet and forehead whenever they suffer physical or Willpower damage. However, this does not trigger when they spend Willpower." }
     ]
 }
 
@@ -129,11 +106,10 @@ export const supernaturalSituationsMeritsAndFlaws: MeritsAndFlaws = {
 export const alliesMeritsAndFlaws: MeritsAndFlaws = {
     title: "🤝 Allies",
     merits: [
-        { name: "Allies", cost: [1, 2, 3, 4, 5, 6], summary: "A group who will support or aid the Garou. Family, friends, or an organization that has loyalty. Build them between (• - ••••) Effectiveness and (•-•••) Reliability, the maximum amount of total points is 6. Effectiveness defines how proficient they are at a task. Reliability determines how dependable they are." }
+        { name: "Allies", cost: [1, 2, 3, 4, 5, 6], summary: "A group who will support or aid the Hunter. Family, friends, or an organization that has loyalty. Build them between (• - ••••) Effectiveness and (•-•••) Reliability, the maximum amount of total points is 6. Effectiveness defines how proficient they are at a task. Reliability determines how dependable they are." }
     ],
     flaws: [
-        { name: "Enemy", cost: [1, 2, 3, 4, 5], summary: "The opposite to Allies, and are rated two dots less than their effectiveness." },
-        { name: "Stalkers", cost: [1], summary: "Something about the character tends to attract others who get a little bit too attached and just won't let go. Should they get rid of them, another soon appears." }
+        { name: "Enemy", cost: [1, 2, 3, 4, 5], summary: "The opposite to Allies, and are rated two dots less than their effectiveness." }
     ]
 }
 
@@ -155,7 +131,19 @@ export const fameMeritsAndFlaws: MeritsAndFlaws = {
     flaws: [
         { name: "Infamy", cost: [2], summary: "They've done something atrocious and others know." },
         { name: "Dark Secret", cost: [1], summary: "What they've done is still a secret, except to one or two very motivated enemies." },
-        { name: "Infamous Partner", cost: [1], summary: "A spouse, lover or someone else significant to the character has Infamy that will sometimes tarnish the reputation of the Garou by association." }
+        { name: "Infamous Partner", cost: [1], summary: "A spouse, lover or someone else significant to the character has Infamy that will sometimes tarnish the reputation of the Hunter by association." }
+    ]
+}
+
+// Influence Merits & Flaws
+export const influenceMeritsAndFlaws: MeritsAndFlaws = {
+    title: "💪 Influence",
+    merits: [
+        { name: "Influence", cost: [1, 2, 3, 4, 5], summary: "They have sway in communities, be they political, through financial status and prestige, or manipulation. By default, this merit usually applies to a specific group or region of the city." }
+    ],
+    flaws: [
+        { name: "Disliked", cost: [1], summary: "Subtract one die from Social tests involving groups outside of the character's loyal followers." },
+        { name: "Despised", cost: [2], summary: "One group/region of the city goes out of its way to thwart the character's plans." }
     ]
 }
 
@@ -163,13 +151,14 @@ export const fameMeritsAndFlaws: MeritsAndFlaws = {
 export const maskMeritsAndFlaws: MeritsAndFlaws = {
     title: "🎭 Mask",
     merits: [
-        { name: "Mask", cost: [1, 2], summary: "A fake identity that allows the Garou to keep their true selves away from the law, this might include bank accounts, a birth certificate and everything else a Garou might need to hide their identity." },
+        { name: "Mask", cost: [1, 2], summary: "A fake identity that allows the Hunter to keep their true selves away from the law or rival orgs, this might include bank accounts, a birth certificate and everything else a Hunter might need to hide their identity." },
         { name: "Zeroed", cost: [1], summary: "All of the character's past self has been purged from all systems as if they never existed. The character must have a 2-dot mask in order to take this." },
-        { name: "Cobbler", cost: [1], summary: "The ability to create or source out masks. Making a mask takes 3 days per dot. The character must have a 2-dot mask in order to take this." }
+        { name: "Cobbler", cost: [1], summary: "The ability to create or source out masks. Making a mask takes 3 days per dot. The character must have a 2-dot mask in order to take this." },
+        { name: "Faked Death", cost: [2], summary: "As long as you keep a low profile and a new identity nobody from your old life is going to be looking for yo including Enemies, Stalkers, and orgs. You do maintain a limited relationship with any Contacts. The character must have a 2-dot mask in order to take this. Unless you buy a separate Mask Merit you have the same penalties as the Serial Error Flaw." }
     ],
     flaws: [
         { name: "Serial Error", cost: [1], summary: "A mistake has been made in the characters background checks showing that they'd recently died, are on a dangerous watchlist, or otherwise likely to be called or detained by the police. This also applies to any database lookups on their identity." },
-        { name: "Person of Interest", cost: [2], summary: "The Garou has become a person of interest and with their biometrics and information having been logged as a potential terrorist in agency databases." }
+        { name: "Person of Interest", cost: [2], summary: "The Hunter has become a person of interest and with their biometrics and information having been logged as a potential terrorist in agency databases." }
     ]
 }
 
@@ -177,10 +166,13 @@ export const maskMeritsAndFlaws: MeritsAndFlaws = {
 export const mentorMeritsAndFlaws: MeritsAndFlaws = {
     title: "👨‍🏫 Mentor",
     merits: [
-        { name: "Mentor", cost: [1, 2, 3, 4, 5], summary: "Another Garou or pack of Garou who has taken the character under their wing." }
+        { name: "Mentor", cost: [1, 2, 3, 4, 5], summary: "Another Hunter or group of Hunters who has taken the character under their wing." },
+        { name: "Generous", cost: [1, 2, 3], summary: "You can call upon your mentor for a valuable favor once per story. This does not run the usual risk of offending your mentor but you lose a dot from this background each time you do." },
+        { name: "Spirit Guide (Arcanum)", cost: [2], summary: "Your mentor is some kind of ghost or unearthly being that you studied and formed a rapport with. You have the ability to summon them. They are unable to aid with corporeal matters like law enforcement or politics but they do have reliable knowledge on ghosts." }
     ],
     flaws: [
-        { name: "Adversary", cost: [1, 2, 3], summary: "A rival Garou who wants to do the Garou or their pack harm." }
+        { name: "Adversary", cost: [1, 2, 3], summary: "A rival Hunter who wants to do the Hunter or their cell harm." },
+        { name: "Credit Hungry (Arcanum)", cost: [1], summary: "On any Hunt where you call upon your mentor for aid, they will take credit for all achievements but not negative consequences." }
     ]
 }
 
@@ -188,62 +180,78 @@ export const mentorMeritsAndFlaws: MeritsAndFlaws = {
 export const resourcesMeritsAndFlaws: MeritsAndFlaws = {
     title: "💰 Resources",
     merits: [
-        { name: "Resources", cost: [1, 2, 3, 4, 5], summary: "An abstract form of wealth or other assets the character can use to their advantage in some situations." }
+        { name: "Resources", cost: [1, 2, 3, 4, 5], summary: "Cash flow, be it from stock trading or equipment to working as a barista at night." }
     ],
     flaws: [
         { name: "Destitute", cost: [1], summary: "No money and no home." }
     ]
 }
 
-// Spirit Pact Merits & Flaws
-export const spiritPactMeritsAndFlaws: MeritsAndFlaws = {
-    title: "👻 Spirit Pact",
+// Retainers Merits & Flaws
+export const retainersMeritsAndFlaws: MeritsAndFlaws = {
+    title: "� Retainers",
     merits: [
-        { name: "Spirit Pact", cost: [1, 2, 3, 4, 5], summary: "Loyal spirit who will aid the Garou." },
-        { name: "Host", cost: [1], summary: "The spirit has a physical body it hosts. Spirits without the Companion trait still must be summoned." },
-        { name: "Companion", cost: [2], summary: "The spirit can accompany the character whenever they go long as nothing prevents it such as spiritual wards. Without a physical host communication is restricted to the Umbra or other means." }
+        { name: "Retainers", cost: [1, 2, 3], summary: "Loyal followers who will accomplish a request for the Hunter." }
     ],
     flaws: [
-        { name: "Pact Condition", cost: [1], summary: "The pact requires performing or avoiding certain actions in exchange for aid. Failing to do so angers the spirits and it does not count as an ally until penance has been made." }
+        { name: "Stalkers", cost: [1], summary: "Something about the character tends to attract others who get a little bit too attached and just won't let go. Be it a former retainer or a past lover, should they get rid of them, another soon appears." }
     ]
 }
 
-// Backgrounds
-export const backgroundsData: BackgroundsData = {
-    title: "📚 Backgrounds",
-    backgrounds: [
-        { name: "Allies", cost: [1, 2, 3, 4, 5], summary: "Human or Garou who will help you" },
-        { name: "Ancestors", cost: [1, 2, 3, 4, 5], summary: "Guidance from ancestral spirits" },
-        { name: "Contacts", cost: [1, 2, 3, 4, 5], summary: "Network of information sources" },
-        { name: "Fate", cost: [1, 2, 3, 4, 5], summary: "Destiny guides and protects you" },
-        { name: "Fetish", cost: [1, 2, 3, 4, 5], summary: "Spirit-inhabited magical item" },
-        { name: "Kinfolk", cost: [1, 2, 3, 4, 5], summary: "Human or wolf relatives who know the truth" },
-        { name: "Mentor", cost: [1, 2, 3, 4, 5], summary: "Older Garou who teaches and guides you" },
-        { name: "Past Life", cost: [1, 2, 3, 4, 5], summary: "Memories from previous incarnations" },
-        { name: "Pure Breed", cost: [1, 2, 3, 4, 5], summary: "Strong connection to wolf or human ancestry" },
-        { name: "Resources", cost: [1, 2, 3, 4, 5], summary: "Wealth and material possessions" },
-        { name: "Rites", cost: [1, 2, 3, 4, 5], summary: "Knowledge of Garou rituals" },
-        { name: "Totem", cost: [1, 2, 3, 4, 5], summary: "Shared pack totem spirit" }
+// Safe House Merits & Flaws
+export const safeHouseMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🏠 Safe House",
+    merits: [
+        { name: "Safe House", cost: [1, 2, 3], summary: "Each dot adds +1 to the Difficulty or 1 die to the pools for resisting spotting, penetrating and surveilling the Hunter's home. Also add one dice per dot to notice danger while in the Safe House." },
+        { name: "Hidden Armory", cost: [1, 2, 3, 4, 5], summary: "Each dot adds one pistol and one long firearm inside the safe house, safely concealed. These aren't as strong as those earned from the Arsenal Edge, nor do they automatically replenish if misplaced." },
+        { name: "Panic Room", cost: [1, 2, 3, 4, 5], summary: "The ability to house to individuals and breaching this requires a base Difficulty of 5, this can also be applied to those held captive. Each extra dot allows either twice as many individuals with a cap of 32 in large safe houses or adds +1 to the breach/escape Difficulty. This is not available to 1 dot safe houses." },
+        { name: "Watchmen", cost: [1, 2, 3, 4, 5], summary: "Each dot supplies 4 Average Mortals and one Gifted Mortal to watch over the safe house." },
+        { name: "Laboratory", cost: [1, 2, 3, 4, 5], summary: "Each dot of this merit contributes to dice rolls related to one Science or Technology specialty. Not available in one dot safe houses." },
+        { name: "Luxury", cost: [1], summary: "Rich and full of value, the safe house is well decorated with high-end décor and items. +2 dice bonus to Social tests when mortals are inside the safe house. Without at least 3 dots in Resources, these items are stolen or illegally obtained." },
+        { name: "Postern", cost: [1, 2, 3, 4, 5], summary: "The safe house has some kind of secret exit that allows them a safe passage out. For each dot of this merit add one die to pools of evasion or escaping surveillance near the safe house." },
+        { name: "Security System", cost: [1, 2, 3, 4, 5], summary: "For each dot of this merit, add one die to pools to resist (or to alert the Hunter to) unwelcome guests into the safe house." },
+        { name: "Surgery", cost: [1], summary: "Add two die to relevant pools for relevant tests performed in safe houses." },
+        { name: "Bolt Hole", cost: [1], summary: "Whenever hiding or attempting to move from one safe place to another undetected, receive a 2 dice bonus." }
+    ],
+    flaws: [
+        { name: "No Safe House", cost: [1], summary: "The character has no expectation of security while at home." },
+        { name: "Creepy", cost: [1], summary: "Take a two-dice penalty on Social pools in the safe house with human guests." },
+        { name: "Haunted", cost: [1, 2, 3, 4, 5], summary: "There is a supernatural manifestation taking hold over the safe house with the penalties defined by the Storyteller. It should at least give a one-die penalty or bonus to affected pools used in the safe house per dot of Haunted." },
+        { name: "Compromised", cost: [2], summary: "This safe house is on a watchlist and may have been raided at some point, adding two dice to pools to penetrate or watch the safe house." },
+        { name: "Interfering Roommate", cost: [1], summary: "The safe house isn't private, with someone else also using it for legitimate purpose, keeping an eye on the character. Suspicious or outright criminal activity will be reported to relevant authorities." }
+    ]
+}
+
+// Status Merits & Flaws
+export const statusMeritsAndFlaws: MeritsAndFlaws = {
+    title: "📊 Status",
+    merits: [
+        { name: "Status", cost: [1, 2, 3, 4, 5], summary: "The character has built a name for themselves with a group of Hunters." }
+    ],
+    flaws: [
+        { name: "Suspect", cost: [1], summary: "Breaking the rules or weaseling out of something owed has netted this character the ire of this Hunter group. Stay out of sight and mind and nothing will happen until they prove their worth again but until then take a 2 dice penalty to Social tests with the offended Hunters." },
+        { name: "Shunned", cost: [2], summary: "Despised by a Hunter group, a line was crossed that never should have been, and now members of this group actively work against them at any opportunity." }
     ]
 }
 
 // Main merits and flaws array
 export const meritsAndFlaws: MeritsAndFlaws[] = [
-    alliesMeritsAndFlaws,
-    caernMeritsAndFlaws,
-    contactsMerits,
-    dayJobMerits,
-    fameMeritsAndFlaws,
     linguisticsMeritsAndFlaws,
+    theWorldOfAcademiaMeritsAndFlaws,
     looksMeritsAndFlaws,
+    nutritionistMeritsAndFlaws,
+    mentalFeatsMeritsAndFlaws,
+    psychologistTraitsFlaws,
+    substanceAbuseFlaws,
+    supernaturalSituationsMeritsAndFlaws,
+    alliesMeritsAndFlaws,
+    contactsMerits,
+    fameMeritsAndFlaws,
+    influenceMeritsAndFlaws,
     maskMeritsAndFlaws,
     mentorMeritsAndFlaws,
-    mythicFlaws,
-    otherMeritsAndFlaws,
     resourcesMeritsAndFlaws,
-    ritesMerits,
-    safeHouseMerits,
-    spiritPactMeritsAndFlaws,
-    substanceAbuseFlaws,
-    supernaturalSituationsMeritsAndFlaws
+    retainersMeritsAndFlaws,
+    safeHouseMeritsAndFlaws,
+    statusMeritsAndFlaws
 ]
