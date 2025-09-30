@@ -129,14 +129,21 @@ export const driveNameSchema = z.union([
 export type DriveName = z.infer<typeof driveNameSchema>
 
 export const edgeNameSchema = z.union([
-    z.literal("arsenal"),
-    z.literal("blessed"),
-    z.literal("fleet"),
-    z.literal("library"),
-    z.literal("net"),
-    z.literal("ordnance"),
-    z.literal("pursuit"),
-    z.literal("stake"),
+    z.literal("Arsenal"),
+    z.literal("Fleet"),
+    z.literal("Library"),
+    z.literal("Experimental Medicine"),
+    z.literal("Improvised Gear"),
+    z.literal("Global Access"),
+    z.literal("Drone Jockey"),
+    z.literal("Beast Whisperer"),
+    z.literal("Turncoat"),
+    z.literal("Sense the Unnatural"),
+    z.literal("Repel the Unnatural"),
+    z.literal("Artifact"),
+    z.literal("Cleanse the Unnatural"),
+    z.literal("Great Destiny"),
+    z.literal("Unnatural Changes"),
     z.literal(""),
 ])
 export type EdgeName = z.infer<typeof edgeNameSchema>
