@@ -97,73 +97,85 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
         )
     }
 
-    const createCreedPick = (creed: CreedName, c2: string) => {
+    const createCreedDescription = (creed: CreedName, c2: string) => {
         const bgColor = theme.fn.linearGradient(0, c1, c2)
 
         return (
-            <Grid.Col key={creed} span={4}>
-                <Card
-                    className="hoverCard"
-                    shadow="sm"
-                    padding="lg"
-                    radius="md"
-                    h={320}
-                    style={{ background: bgColor, cursor: "pointer" }}
-                    onMouseEnter={() => setHoveredCreed(creed)}
-                    onMouseLeave={() => setHoveredCreed(null)}
-                    onClick={() => {
-                        if ((character.edges.length > 0 || character.drive !== "") && creed !== character.creed) {
-                            notifications.show({
-                                title: "Reset Edges",
-                                message: "Because you changed your creed",
-                                autoClose: 7000,
-                                color: "yellow",
-                            })
-
-                            setCharacter({
-                                ...character,
-                                creed,
-                                edges: [],
-                                availableEdgeNames: creeds[creed].edges,
-                                drive: character.drive,
-                            })
-                        } else {
-                            setCharacter({
-                                ...character,
-                                creed,
-                                availableEdgeNames: creeds[creed].edges,
-                            })
-                        }
-
-                        ReactGA.event({
-                            action: "creed clicked",
-                            category: "creeds",
-                            label: creed,
+            <Card
+                className="hoverCard"
+                shadow="sm"
+                padding="lg"
+                radius="md"
+                h={320}
+                style={{ background: bgColor, cursor: "pointer" }}
+                onMouseEnter={() => setHoveredCreed(creed)}
+                onMouseLeave={() => setHoveredCreed(null)}
+                onClick={() => {
+                    if ((character.edges.length > 0 || character.drive !== "") && creed !== character.creed) {
+                        notifications.show({
+                            title: "Reset Edges",
+                            message: "Because you changed your creed",
+                            autoClose: 7000,
+                            color: "yellow",
                         })
-                        nextStep()
-                    }}
-                >
-                    <Card.Section>
-                        <Center pt={10}>
-                            <Image fit="contain" withPlaceholder src={creeds[creed].logo} height={120} width={120} alt={creed} />
-                        </Center>
-                    </Card.Section>
 
-                    <Center>
-                        <Title p="md">{creed}</Title>
-                    </Center>
+                        setCharacter({
+                            ...character,
+                            creed,
+                            edges: [],
+                            availableEdgeNames: creeds[creed].edges,
+                            drive: character.drive,
+                        })
+                    } else {
+                        setCharacter({
+                            ...character,
+                            creed,
+                            availableEdgeNames: creeds[creed].edges,
+                        })
+                    }
 
-                    <ScrollableDescription text={creeds[creed].description} creed={creed} />
-                    
-                    <Text size="xs" ta="center" c="yellow" mt="xs">
-                        <b>Virtue:</b> {creeds[creed].virtue}
-                    </Text>
-                    
-                    <Text size="xs" ta="center" c="blue" mt="xs">
-                        {creeds[creed].organizationType}
-                    </Text>
-                </Card>
-            </Grid.Col>
+                    ReactGA.event({
+                        action: "creed clicked",
+                        category: "creeds",
+                        label: creed,
+                    })
+                    nextStep()
+                }}
+            >
+                <Center>
+                    <Title p="md">{creed}</Title>
+                </Center>
+
+                <ScrollableDescription text={creeds[creed].description} creed={creed} />
+                
+                <Text size="xs" ta="center" c="yellow" mt="xs">
+                    <b>Virtue:</b> {creeds[creed].virtue}
+                </Text>
+                
+                <Text size="xs" ta="center" c="blue" mt="xs">
+                    {creeds[creed].organizationType}
+                </Text>
+            </Card>
+        )
+    }
+
+    const createCreedPicture = (creed: CreedName) => {
+        return (
+            <Card
+                shadow="sm"
+                padding={0}
+                radius="md"
+                h={320}
+                style={{ overflow: 'hidden' }}
+            >
+                <Image 
+                    src={creeds[creed].logo} 
+                    alt={creed}
+                    fit="cover"
+                    width="100%"
+                    height="100%"
+                />
+            </Card>
         )
     }
 
@@ -180,42 +192,46 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
             <hr color="#e03131" />
 
             <ScrollArea h={height - 215} w={"100%"} p={20}>
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.blue[6]}>
-                    Organized Hunters
-                </Text>
-                <Grid grow m={0}>
-                    {["Entrepreneurial", "Martial"]
-                        .map((c) => creedNameSchema.parse(c))
-                        .map((creed) => createCreedPick(creed, theme.fn.rgba(theme.colors.blue[8], 0.9)))}
-                </Grid>
+                <Grid grow m={0} gutter="md">
+                    {/* Entrepreneurial - Description | Picture */}
+                    <Grid.Col span={6}>
+                        {createCreedDescription("Entrepreneurial", theme.fn.rgba(theme.colors.blue[8], 0.9))}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        {createCreedPicture("Entrepreneurial")}
+                    </Grid.Col>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.red[8]}>
-                    Faith-Based Hunters
-                </Text>
-                <Grid grow m={0}>
-                    {["Faithful"]
-                        .map((c) => creedNameSchema.parse(c))
-                        .map((creed) => createCreedPick(creed, theme.fn.rgba(theme.colors.red[8], 0.9)))}
-                </Grid>
+                    {/* Faithful - Picture | Description */}
+                    <Grid.Col span={6}>
+                        {createCreedPicture("Faithful")}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        {createCreedDescription("Faithful", theme.fn.rgba(theme.colors.red[8], 0.9))}
+                    </Grid.Col>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.grape[7]}>
-                    Knowledge Seekers
-                </Text>
+                    {/* Inquisitive - Description | Picture */}
+                    <Grid.Col span={6}>
+                        {createCreedDescription("Inquisitive", theme.fn.rgba(theme.colors.grape[8], 0.9))}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        {createCreedPicture("Inquisitive")}
+                    </Grid.Col>
 
-                <Grid grow m={0}>
-                    {["Inquisitive"]
-                        .map((c) => creedNameSchema.parse(c))
-                        .map((creed) => createCreedPick(creed, theme.fn.rgba(theme.colors.grape[8], 0.9)))}
-                </Grid>
+                    {/* Martial - Picture | Description */}
+                    <Grid.Col span={6}>
+                        {createCreedPicture("Martial")}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        {createCreedDescription("Martial", theme.fn.rgba(theme.colors.blue[8], 0.9))}
+                    </Grid.Col>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.green[7]}>
-                    Street Hunters
-                </Text>
-
-                <Grid grow m={0}>
-                    {["Underground"]
-                        .map((c) => creedNameSchema.parse(c))
-                        .map((creed) => createCreedPick(creed, theme.fn.rgba(theme.colors.green[8], 0.9)))}
+                    {/* Underground - Description | Picture */}
+                    <Grid.Col span={6}>
+                        {createCreedDescription("Underground", theme.fn.rgba(theme.colors.green[8], 0.9))}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        {createCreedPicture("Underground")}
+                    </Grid.Col>
                 </Grid>
             </ScrollArea>
         </div>
