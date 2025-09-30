@@ -259,8 +259,8 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     form.getTextField("Creed")?.setText(character.creed || "")
     form.getTextField("Drive")?.setText(character.drive || "")
     form.getTextField("Chronicle")?.setText(character.chronicle || "")
-    form.getTextField("Ambition")?.setText(character.ambition || "")
-    form.getTextField("Desire")?.setText(character.desire || "")
+    form.getTextField("Concept")?.setText(character.concept || "")
+    form.getTextField("Pack")?.setText(character.pack || "")
 
     // Edges and Powers - Hunter-specific abilities
     // Simplify edge handling to match vampire discipline pattern
