@@ -11,7 +11,42 @@ const BasicsDisplay = ({ character }: BasicsProps) => {
             <Center>
                 <Title order={2}>{character.name}</Title>
             </Center>
-            <Text c="dimmed">{character.description}</Text>
+            {character.playerName && (
+                <Text c="dimmed" ta="center">
+                    <b>Player:</b> {character.playerName}
+                </Text>
+            )}
+            {character.concept && (
+                <Text c="dimmed" ta="center">
+                    <b>Concept:</b> {character.concept}
+                </Text>
+            )}
+            {character.chronicle && (
+                <Text c="dimmed" ta="center">
+                    <b>Chronicle:</b> {character.chronicle}
+                </Text>
+            )}
+            {character.pack && (
+                <Text c="dimmed" ta="center">
+                    <b>Pack:</b> {character.pack}
+                </Text>
+            )}
+            {character.description && <Text c="dimmed">{character.description}</Text>}
+            {character.appearance && (
+                <Text>
+                    <b>Appearance:</b> {character.appearance}
+                </Text>
+            )}
+            {character.history && (
+                <Text>
+                    <b>History:</b> {character.history}
+                </Text>
+            )}
+            {character.notes && (
+                <Text>
+                    <b>Notes:</b> {character.notes}
+                </Text>
+            )}
 
             <Grid>
                 <Grid.Col span={6}>

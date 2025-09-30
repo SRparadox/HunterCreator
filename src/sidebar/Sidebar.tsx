@@ -25,6 +25,11 @@ const Sidebar = ({ character }: SidebarProps) => {
                         <Center><b>Creed:</b> {character.creed}</Center>
                     </Text>
                 ) : null}
+                {notDefault(character, "drive") ? (
+                    <Text fz="xl">
+                        <Center><b>Drive:</b> {character.drive}</Center>
+                    </Text>
+                ) : null}
                 {notDefault(character, "name") ? <BasicsDisplay character={character} /> : null}
                 {notDefault(character, "attributes") ? <AttributesDisplay attributes={character.attributes} /> : null}
                 {notDefault(character, "skills") ? <SkillDisplay skills={character.skills} /> : null}
