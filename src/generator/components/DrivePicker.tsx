@@ -126,8 +126,19 @@ const DrivePicker = ({ character, setCharacter, nextStep }: DrivePickerProps) =>
                 >
                     <Card.Section>
                         <Center pt={10}>
-                            <div style={{ height: 120, width: 120, backgroundColor: theme.colors?.gray?.[6] || '#868e96', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Text size="xl" weight={700}>{drive.charAt(0)}</Text>
+                            <div style={{ 
+                                height: 120, 
+                                width: 120, 
+                                backgroundColor: theme.colors?.gray?.[6] || '#868e96', 
+                                borderRadius: '50%', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                fontSize: '48px',
+                                fontWeight: 700,
+                                color: 'white'
+                            }}>
+                                {drive.charAt(0)}
                             </div>
                         </Center>
                     </Card.Section>

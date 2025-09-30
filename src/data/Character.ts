@@ -92,7 +92,13 @@ export const getEmptyCharacter = (): Character => {
         // Hunter fields
         creed: "",
         drive: "",
-        availableEdgeNames: ["arsenal", "blessed", "fleet", "library", "net", "ordnance", "pursuit", "stake"],
+        availableEdgeNames: [
+            "arsenal", "fleet", "ordnance", "library", "experimental-medicine", 
+            "improvised-gear", "global-access", "drone-jockey", "beast-whisperer", 
+            "turncoat", "sense-the-unnatural", "repel-the-unnatural", 
+            "thwart-the-unnatural", "artifact", "cleanse-the-unnatural", 
+            "great-destiny", "unnatural-changes"
+        ],
         edges: [],
         
         // Legacy compatibility

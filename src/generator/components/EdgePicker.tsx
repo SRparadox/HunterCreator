@@ -30,10 +30,20 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
     const maxEdgePowers = 3
 
     useEffect(() => {
-        // Initialize selected edge powers from character if needed
-        // For now, start with empty selection
-        setSelectedEdgePowers([])
-    }, [character.edges])
+        // Initialize selected edge powers from character on component mount only
+        if (character.edges && character.edges.length > 0) {
+            const initialSelected: SelectedEdgePower[] = character.edges.map(edge => ({
+                edgeName: edge.discipline as EdgeName,
+                perkName: edge.name,
+                perk: {
+                    name: edge.name,
+                    description: edge.description,
+                    reference: ""
+                }
+            }))
+            setSelectedEdgePowers(initialSelected)
+        }
+    }, []) // Remove character.edges dependency to prevent reset on every change
 
     const handleEdgePowerToggle = (edgeName: EdgeName, perkName: string, perk: EdgePerk) => {
         const powerKey = `${edgeName}-${perkName}`
