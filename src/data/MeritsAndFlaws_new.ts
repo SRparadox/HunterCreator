@@ -13,123 +13,231 @@ export type BackgroundsData = {
     backgrounds: MeritOrFlaw[]
 }
 
-// Physical Merits & Flaws
-export const physicalMeritsAndFlaws: MeritsAndFlaws = {
-    title: "🏃 Physical",
+// Linguistics
+export const linguisticsMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🗣️ Linguistics",
     merits: [
-        { name: "Ambidextrous", cost: [3], summary: "No off-hand penalty when using two weapons or tools simultaneously" },
-        { name: "Catlike Balance", cost: [1], summary: "+2 dice to balance-related rolls" },
-        { name: "Double-Jointed", cost: [1], summary: "+2 dice to escape bonds or fit through tight spaces" },
-        { name: "Early Riser", cost: [1], summary: "Always wake up at first light, +1 die to morning activities" },
-        { name: "Efficient Digestion", cost: [3], summary: "Need half as much food; can survive on minimal rations" },
-        { name: "Fleet of Foot", cost: [1, 2, 3], summary: "Movement speed increased by Merit rating" },
-        { name: "Giant", cost: [4], summary: "+1 Health level, +1 die to intimidation, -2 dice to stealth" },
-        { name: "Graceful", cost: [2], summary: "+2 dice to Dexterity + Athletics for fluid movement" },
-        { name: "Iron Stomach", cost: [2], summary: "Immune to ingested toxins and spoiled food" },
-        { name: "Natural Swimmer", cost: [1], summary: "+2 dice to swimming rolls" },
-        { name: "Perfect Balance", cost: [1], summary: "+3 dice to maintain balance in precarious situations" },
-        { name: "Tough", cost: [3], summary: "+1 Health level" }
+        { name: "Linguistics", cost: [1], summary: "Each dot allows fluency in another language outside of native and chronicle setting languages" },
+        { name: "Dead Tongues", cost: [2], summary: "Add 2 bonus dice when attempting to translate an extinct language" }
     ],
     flaws: [
-        { name: "Bad Sight", cost: [1, 2], summary: "+1/+2 difficulty to perception rolls beyond arm's reach" },
-        { name: "Diminutive", cost: [4], summary: "-1 Health level, +2 dice to hide, -2 dice to intimidate" },
-        { name: "Hard of Hearing", cost: [1], summary: "+2 difficulty to hearing-based perception rolls" },
-        { name: "Lame", cost: [3], summary: "Movement speed halved, +1 difficulty to physical actions" },
-        { name: "Monstrous", cost: [3], summary: "Appear obviously inhuman, -3 dice to social rolls with humans" },
-        { name: "Mute", cost: [4], summary: "Cannot speak, must rely on other forms of communication" },
-        { name: "One Arm", cost: [3], summary: "Missing an arm, cannot perform two-handed actions" },
-        { name: "One Eye", cost: [2], summary: "No depth perception, +1 difficulty to ranged attacks" },
-        { name: "Short", cost: [1], summary: "-1 die to intimidation, +1 die to hide" },
-        { name: "Slow Healing", cost: [3], summary: "All healing times doubled" },
-        { name: "Weak", cost: [3], summary: "-1 die to all Strength rolls" }
+        { name: "Illiterate", cost: [2], summary: "Cannot read nor write; Science and Academics Skills may not go beyond 1 dot" },
+        { name: "El Mala Educación", cost: [2], summary: "Requires Dead Tongues merit. Danger rating increases by 1 on total failures or critical results when translating extinct languages" }
     ]
 }
 
-// Mental Merits & Flaws  
-export const mentalMeritsAndFlaws: MeritsAndFlaws = {
-    title: "🧠 Mental",
+// The World of Academia
+export const academicMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🎓 The World of Academia",
     merits: [
-        { name: "Common Sense", cost: [1], summary: "Storyteller warns you before obviously dangerous actions" },
-        { name: "Computer Aptitude", cost: [2], summary: "+2 dice to all computer-related rolls" },
-        { name: "Concentration", cost: [1], summary: "+2 dice to resist distraction" },
-        { name: "Danger Sense", cost: [2], summary: "Roll Wits + Alertness to sense immediate danger" },
-        { name: "Eidetic Memory", cost: [2], summary: "Perfect recall of anything experienced" },
-        { name: "Iron Will", cost: [3], summary: "+3 dice to resist mental domination or emotional manipulation" },
-        { name: "Language", cost: [1], summary: "Fluent in an additional language per dot" },
-        { name: "Lightning Calculator", cost: [1], summary: "Perform complex math instantly in your head" },
-        { name: "Natural Linguist", cost: [2], summary: "Learn new languages in half the time" },
-        { name: "Photographic Memory", cost: [3], summary: "Perfect visual recall, +2 dice to remember visual details" },
-        { name: "Time Sense", cost: [1], summary: "Always know the current time and track time passage perfectly" }
+        { name: "Forbidden Texts", cost: [2], summary: "Gain 2 dice bonus on research tests for chosen monster type. Subject will want writings back" },
+        { name: "Thesis", cost: [2], summary: "Choose additional Specialty tied to academics, applying to any Skill in research tests" },
+        { name: "Part of the Furniture", cost: [3], summary: "Once per session, add 2 dice to any single pool when interacting with campus staff or on campus" }
     ],
     flaws: [
-        { name: "Amnesia", cost: [2], summary: "No memory of life before the Awakening" },
-        { name: "Absent-Minded", cost: [3], summary: "Frequently forget important details and appointments" },
-        { name: "Confused", cost: [2], summary: "+1 difficulty to all mental rolls" },
-        { name: "Nightmares", cost: [1], summary: "Disturbing dreams prevent restful sleep" },
-        { name: "Phobia", cost: [1, 2, 3], summary: "Paralyzing fear of specific object or situation" },
-        { name: "Short Fuse", cost: [2], summary: "+2 difficulty to resist frenzy from anger" },
-        { name: "Soft-Hearted", cost: [1], summary: "Cannot ignore others' suffering, -2 dice to callous actions" },
-        { name: "Territorial", cost: [2], summary: "Must defend your territory aggressively" },
-        { name: "Vengeance", cost: [2], summary: "Obsessed with revenge against specific enemy" },
-        { name: "Ward", cost: [3], summary: "Must protect a mortal who depends on you" }
+        { name: "Falling Grades", cost: [1], summary: "Reduce social pools by two when dealing with campus staff" },
+        { name: "Dangerous Knowledge", cost: [2], summary: "On total failure or critical with research/perception tests on chosen monster type, Danger rating increases by 1" }
     ]
 }
 
-// Social Merits & Flaws
-export const socialMeritsAndFlaws: MeritsAndFlaws = {
-    title: "👥 Social",
+// Looks
+export const looksMeritsAndFlaws: MeritsAndFlaws = {
+    title: "✨ Looks",
     merits: [
-        { name: "Animal Magnetism", cost: [1], summary: "+1 die to social rolls to attract others" },
-        { name: "Charming", cost: [1], summary: "+1 die to social rolls involving charm or persuasion" },
-        { name: "Diplomatic Immunity", cost: [2], summary: "Legal immunity due to political status" },
-        { name: "Fame", cost: [1, 2, 3], summary: "Well-known in specific field, +1 die per dot to relevant social rolls" },
-        { name: "Intimidating", cost: [1], summary: "+2 dice to intimidation rolls" },
-        { name: "Natural Leader", cost: [1], summary: "+1 die to leadership and inspiring rolls" },
-        { name: "Reputation", cost: [2], summary: "+2 dice to social rolls within specific community" },
-        { name: "Soothing Voice", cost: [2], summary: "+2 dice to calm others or reduce aggression" },
-        { name: "Trustworthy", cost: [1], summary: "Others instinctively trust you, +1 die to social rolls" }
+        { name: "Beautiful", cost: [2], summary: "Add one die to related Social pools" },
+        { name: "Stunning", cost: [4], summary: "Add two dice to related Social pools" }
     ],
     flaws: [
-        { name: "Dark Secret", cost: [1], summary: "Devastating secret that would ruin you if revealed" },
-        { name: "Hunted", cost: [4], summary: "Actively pursued by dangerous enemy" },
-        { name: "Intolerance", cost: [1], summary: "-2 dice to social rolls with specific group you despise" },
-        { name: "Notoriety", cost: [3], summary: "Bad reputation precedes you, -1 to social rolls" },
-        { name: "Persistent Parents", cost: [2], summary: "Human parents constantly interfere in your life" },
-        { name: "Shy", cost: [1], summary: "+1 difficulty to social rolls with strangers" },
-        { name: "Social Outcast", cost: [3], summary: "Rejected by Garou society, -2 dice to social rolls with Garou" },
-        { name: "Speech Impediment", cost: [1], summary: "+1 difficulty to verbal social rolls" },
-        { name: "Twisted Upbringing", cost: [1], summary: "Unusual childhood affects your worldview" }
+        { name: "Ugly", cost: [1], summary: "Lose one die from related Social pools" },
+        { name: "Repulsive", cost: [2], summary: "Lose two dice from related Social pools" }
     ]
 }
 
-// Supernatural Merits & Flaws
-export const supernaturalMeritsAndFlaws: MeritsAndFlaws = {
-    title: "🌙 Supernatural",
+// Nutritionist
+export const nutritionistMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🍽️ Nutritionist",
     merits: [
-        { name: "Calm Heart", cost: [3], summary: "+2 dice to resist frenzy" },
-        { name: "Dual Nature", cost: [2], summary: "Have two Nature archetypes, can regain Willpower from either" },
-        { name: "Fae Sight", cost: [3], summary: "Can see through supernatural illusions and glamour" },
-        { name: "Healing Touch", cost: [1], summary: "+2 dice to First Aid rolls" },
-        { name: "Higher Purpose", cost: [1], summary: "+1 die to rolls directly related to your higher purpose" },
-        { name: "Luck", cost: [3], summary: "Once per session, re-roll any failed roll" },
-        { name: "Magic Resistance", cost: [2], summary: "+2 dice to resist supernatural powers" },
-        { name: "Medium", cost: [2], summary: "Can see and communicate with ghosts" },
-        { name: "Natural Channel", cost: [3], summary: "+2 dice to all spirit-related rolls" },
-        { name: "Psychic", cost: [2], summary: "Minor psychic abilities, can sense supernatural presences" },
-        { name: "Spirit Mentor", cost: [3], summary: "Powerful spirit guide provides advice and occasional aid" },
-        { name: "True Faith", cost: [7], summary: "Genuine religious faith provides protection against supernatural evil" }
+        { name: "Solo Cooking", cost: [1], summary: "Heal one extra Superficial Health at session start if time to prepare a meal" },
+        { name: "Cell Chef", cost: [2], summary: "Entire cell heals one extra Superficial Health at session start if time to prepare a meal" }
     ],
     flaws: [
-        { name: "Cursed", cost: [1, 2, 3, 4, 5], summary: "Subject to a supernatural curse of varying severity" },
-        { name: "Foe from the Past", cost: [1, 2, 3], summary: "Enemy from past life seeks revenge" },
-        { name: "Haunted", cost: [3], summary: "Followed by troublesome ghost" },
-        { name: "Jinxed", cost: [4], summary: "Technology malfunctions around you more than normal for Garou" },
-        { name: "Mark of the Predator", cost: [2], summary: "Animals fear you, technology fails more often" },
-        { name: "Primal Marks", cost: [3], summary: "Permanent physical marks of your Crinos form show in human form" },
-        { name: "Sign of the Wolf", cost: [2], summary: "Wolves and wolf-dogs react aggressively to you" },
-        { name: "Slip Sideways", cost: [1], summary: "Randomly slip into the Umbra during stress" },
-        { name: "Taint of Corruption", cost: [1, 2, 3, 4, 5], summary: "Corrupted by Wyrm influence" },
-        { name: "Forced Transformation", cost: [1, 2, 4], summary: "Transform involuntarily under specific conditions" }
+        { name: "Malnourished", cost: [2], summary: "Health calculated as Stamina + 2 instead of Stamina + 3" }
+    ]
+}
+
+// Mental Feats
+export const mentalFeatsMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🧠 Mental Feats",
+    merits: [
+        { name: "Always Prepared", cost: [2], summary: "Add 2 bonus dice to Preparedness dice pools" },
+        { name: "Eidetic Memory", cost: [2], summary: "Gain 2 bonus dice on recall tests for codes, directions, maps, facial recognition, formulae, and rote behaviors" }
+    ],
+    flaws: [
+        { name: "Disordered Sleep", cost: [2], summary: "Must roll die when studying/waiting/keeping watch; fall asleep on failure" }
+    ]
+}
+
+// Psychologist Traits
+export const psychologistTraitsMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🧑‍⚕️ Psychologist Traits",
+    merits: [],
+    flaws: [
+        { name: "Living on the Edge", cost: [2], summary: "Suffer two-dice penalty for all actions until participating in risky temptation or scene ends" },
+        { name: "Weak-Willed", cost: [3], summary: "Cannot use active resistance systems to avoid mental influence attempts even when aware" }
+    ]
+}
+
+// Substance Abuse
+export const substanceAbuseMeritsAndFlaws: MeritsAndFlaws = {
+    title: "💊 Substance Abuse",
+    merits: [],
+    flaws: [
+        { name: "Addiction", cost: [1], summary: "Unless action is to gain drug, lose one die to all pools if didn't indulge last scene" },
+        { name: "Severe Addiction", cost: [2], summary: "Unless action is to gain drug, lose two dice to all pools if didn't indulge last scene" }
+    ]
+}
+
+// Supernatural Situations
+export const supernaturalSituationsMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🌙 Supernatural Situations",
+    merits: [
+        { name: "Unseemly Aura", cost: [2], summary: "Monsters occasionally believe Hunter to be one of their own or another supernatural creature" }
+    ],
+    flaws: [
+        { name: "Crone's Curse", cost: [3], summary: "Appear at least a decade older, reduces health tracker by one" },
+        { name: "Stigmata", cost: [2], summary: "Bleed from open wounds when suffering Health or Willpower damage (select type at creation)" }
+    ]
+}
+
+// Allies
+export const alliesMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🤝 Allies",
+    merits: [
+        { name: "Allies", cost: [1, 2, 3, 4, 5, 6], summary: "A group who will support or aid the Hunter. Build between (1-4) Effectiveness and (1-3) Reliability, max 6 total points" }
+    ],
+    flaws: [
+        { name: "Enemy", cost: [1], summary: "Opposite to Allies, rated two dots less than their effectiveness" }
+    ]
+}
+
+// Contacts
+export const contactsMeritsAndFlaws: MeritsAndFlaws = {
+    title: "📞 Contacts",
+    merits: [
+        { name: "Contacts", cost: [1, 2, 3], summary: "People who can get the character information, items or other things of value" }
+    ],
+    flaws: []
+}
+
+// Fame
+export const fameMeritsAndFlaws: MeritsAndFlaws = {
+    title: "⭐ Fame",
+    merits: [
+        { name: "Fame", cost: [1, 2, 3, 4, 5], summary: "Public celebrity. Level can subtract from tests against fans and replace other Traits in Social tests" }
+    ],
+    flaws: [
+        { name: "Infamy", cost: [2], summary: "Done something atrocious and others know" },
+        { name: "Dark Secret", cost: [1], summary: "Atrocious deed still secret, except to one or two motivated enemies" },
+        { name: "Infamous Partner", cost: [1], summary: "Spouse/lover/significant other has Infamy that tarnishes Hunter's reputation" }
+    ]
+}
+
+// Influence
+export const influenceMeritsAndFlaws: MeritsAndFlaws = {
+    title: "💼 Influence",
+    merits: [
+        { name: "Influence", cost: [1, 2, 3, 4, 5], summary: "Sway in communities through political, financial status, prestige, or manipulation" }
+    ],
+    flaws: [
+        { name: "Disliked", cost: [1], summary: "Subtract one die from Social tests involving groups outside loyal followers" },
+        { name: "Despised", cost: [2], summary: "One group/region goes out of its way to thwart character's plans" }
+    ]
+}
+
+// Mask
+export const maskMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🎭 Mask",
+    merits: [
+        { name: "Mask", cost: [1, 2], summary: "Fake identity to keep true self away from law or rival orgs" },
+        { name: "Zeroed", cost: [1], summary: "All past self purged from systems as if never existed. Requires 2-dot mask" },
+        { name: "Cobbler", cost: [1], summary: "Ability to create or source masks. Making takes 3 days per dot. Requires 2-dot mask" },
+        { name: "Faked Death", cost: [2], summary: "Nobody from old life looking for you. Requires 2-dot mask" }
+    ],
+    flaws: [
+        { name: "Serial Error", cost: [1], summary: "Mistake in background checks showing recently died, on watchlist, or likely to be detained" },
+        { name: "Person of Interest", cost: [2], summary: "Biometrics logged as potential terrorist in agency databases" }
+    ]
+}
+
+// Mentor
+export const mentorMeritsAndFlaws: MeritsAndFlaws = {
+    title: "👨‍🏫 Mentor",
+    merits: [
+        { name: "Mentor", cost: [1, 2, 3, 4, 5], summary: "Another Hunter or group who has taken character under their wing" },
+        { name: "Generous", cost: [1, 2, 3], summary: "Call upon mentor for valuable favor once per story. No risk but lose a dot each time" },
+        { name: "Spirit Guide (Arcanum)", cost: [2], summary: "Ghost or unearthly mentor you can summon. Reliable knowledge on ghosts" }
+    ],
+    flaws: [
+        { name: "Adversary", cost: [1, 2, 3], summary: "Rival Hunter who wants to do harm to Hunter or their cell" },
+        { name: "Credit Hungry (Arcanum)", cost: [1], summary: "On Hunts where you call mentor for aid, they take credit for achievements" }
+    ]
+}
+
+// Resources
+export const resourcesMeritsAndFlaws: MeritsAndFlaws = {
+    title: "💰 Resources",
+    merits: [
+        { name: "Resources", cost: [1, 2, 3, 4, 5], summary: "Cash flow from stock trading, equipment, or working jobs" }
+    ],
+    flaws: [
+        { name: "Destitute", cost: [1], summary: "No money and no home" }
+    ]
+}
+
+// Retainers
+export const retainersMeritsAndFlaws: MeritsAndFlaws = {
+    title: "👥 Retainers",
+    merits: [
+        { name: "Retainers", cost: [1, 2, 3], summary: "Loyal followers who will accomplish requests for the Hunter" }
+    ],
+    flaws: [
+        { name: "Stalkers", cost: [1], summary: "Attracts others who get too attached and won't let go" }
+    ]
+}
+
+// Safe House
+export const safeHouseMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🏠 Safe House",
+    merits: [
+        { name: "Safe House", cost: [1, 2, 3], summary: "Each dot adds +1 Difficulty/1 die to resist spotting, penetrating, surveilling home. +1 die per dot to notice danger" },
+        { name: "Hidden Armory", cost: [1], summary: "Each dot adds one pistol and one long firearm, safely concealed" },
+        { name: "Panic Room", cost: [1], summary: "House individuals with breach Difficulty 5. Extra dots allow twice as many or +1 breach Difficulty" },
+        { name: "Watchmen", cost: [1], summary: "Each dot supplies 4 Average Mortals and one Gifted Mortal to watch safe house" },
+        { name: "Laboratory", cost: [1], summary: "Each dot contributes to dice rolls for one Science or Technology specialty" },
+        { name: "Luxury", cost: [1], summary: "+2 dice bonus to Social tests when mortals inside. Requires 3+ Resources or items are stolen" },
+        { name: "Postern", cost: [1], summary: "Secret exit. Each dot adds one die to evasion/escaping surveillance pools" },
+        { name: "Security System", cost: [1], summary: "Each dot adds one die to resist/alert to unwelcome guests" },
+        { name: "Surgery", cost: [1], summary: "Add two dice to relevant medical tests in safe house" },
+        { name: "Bolt Hole", cost: [1], summary: "2 dice bonus when hiding or moving between safe places undetected" }
+    ],
+    flaws: [
+        { name: "No Safe House", cost: [1], summary: "No expectation of security while at home" },
+        { name: "Creepy", cost: [1], summary: "Two-dice penalty on Social pools in safe house with human guests" },
+        { name: "Haunted", cost: [1], summary: "Supernatural manifestation. At least one-die penalty or bonus per dot to affected pools" },
+        { name: "Compromised", cost: [2], summary: "On watchlist, may have been raided. +2 dice to penetrate or watch safe house" },
+        { name: "Interfering Roommate", cost: [1], summary: "Someone else uses safe house legitimately, reports suspicious activity" }
+    ]
+}
+
+// Status
+export const statusMeritsAndFlaws: MeritsAndFlaws = {
+    title: "🏆 Status",
+    merits: [
+        { name: "Status", cost: [1, 2, 3, 4, 5], summary: "Built a name within specific local community of Hunters" }
+    ],
+    flaws: [
+        { name: "Suspect", cost: [1], summary: "2 dice penalty to Social tests with offended Hunters until proving worth again" },
+        { name: "Shunned", cost: [2], summary: "Despised by Hunter group, members actively work against them" }
     ]
 }
 
@@ -137,25 +245,37 @@ export const supernaturalMeritsAndFlaws: MeritsAndFlaws = {
 export const backgroundsData: BackgroundsData = {
     title: "📚 Backgrounds",
     backgrounds: [
-        { name: "Allies", cost: [1, 2, 3, 4, 5], summary: "Human or Garou who will help you" },
-        { name: "Ancestors", cost: [1, 2, 3, 4, 5], summary: "Guidance from ancestral spirits" },
-        { name: "Contacts", cost: [1, 2, 3, 4, 5], summary: "Network of information sources" },
-        { name: "Fate", cost: [1, 2, 3, 4, 5], summary: "Destiny guides and protects you" },
-        { name: "Fetish", cost: [1, 2, 3, 4, 5], summary: "Spirit-inhabited magical item" },
-        { name: "Kinfolk", cost: [1, 2, 3, 4, 5], summary: "Human or wolf relatives who know the truth" },
-        { name: "Mentor", cost: [1, 2, 3, 4, 5], summary: "Older Garou who teaches and guides you" },
-        { name: "Past Life", cost: [1, 2, 3, 4, 5], summary: "Memories from previous incarnations" },
-        { name: "Pure Breed", cost: [1, 2, 3, 4, 5], summary: "Strong connection to wolf or human ancestry" },
-        { name: "Resources", cost: [1, 2, 3, 4, 5], summary: "Wealth and material possessions" },
-        { name: "Rites", cost: [1, 2, 3, 4, 5], summary: "Knowledge of Garou rituals" },
-        { name: "Totem", cost: [1, 2, 3, 4, 5], summary: "Shared pack totem spirit" }
+        { name: "Allies", cost: [1, 2, 3, 4, 5, 6], summary: "Groups who will support or aid the Hunter" },
+        { name: "Contacts", cost: [1, 2, 3], summary: "Network of information and item sources" },
+        { name: "Fame", cost: [1, 2, 3, 4, 5], summary: "Public notoriety for good or bad" },
+        { name: "Influence", cost: [1, 2, 3, 4, 5], summary: "Ability to influence how groups react or act" },
+        { name: "Mask", cost: [1, 2], summary: "Status of Hunter's identification" },
+        { name: "Mentor", cost: [1, 2, 3, 4, 5], summary: "Relationship with experienced Hunters who offer guidance" },
+        { name: "Resources", cost: [1, 2, 3, 4, 5], summary: "Income and material possessions" },
+        { name: "Retainers", cost: [1, 2, 3], summary: "Loyal servants or assistants" },
+        { name: "Safe House", cost: [1, 2, 3], summary: "Security and distinction beyond basic shelter" },
+        { name: "Status", cost: [1, 2, 3, 4, 5], summary: "Reputation within Hunter communities" }
     ]
 }
 
 // Main merits and flaws array
 export const meritsAndFlaws: MeritsAndFlaws[] = [
-    physicalMeritsAndFlaws,
-    mentalMeritsAndFlaws,
-    socialMeritsAndFlaws,
-    supernaturalMeritsAndFlaws
+    linguisticsMeritsAndFlaws,
+    academicMeritsAndFlaws,
+    looksMeritsAndFlaws,
+    nutritionistMeritsAndFlaws,
+    mentalFeatsMeritsAndFlaws,
+    psychologistTraitsMeritsAndFlaws,
+    substanceAbuseMeritsAndFlaws,
+    supernaturalSituationsMeritsAndFlaws,
+    alliesMeritsAndFlaws,
+    contactsMeritsAndFlaws,
+    fameMeritsAndFlaws,
+    influenceMeritsAndFlaws,
+    maskMeritsAndFlaws,
+    mentorMeritsAndFlaws,
+    resourcesMeritsAndFlaws,
+    retainersMeritsAndFlaws,
+    safeHouseMeritsAndFlaws,
+    statusMeritsAndFlaws
 ]
