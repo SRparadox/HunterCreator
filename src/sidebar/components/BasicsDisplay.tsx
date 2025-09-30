@@ -47,6 +47,11 @@ const BasicsDisplay = ({ character }: BasicsProps) => {
                     <b>Notes:</b> {character.notes}
                 </Text>
             )}
+            {character.redemption && (
+                <Text>
+                    <b>Redemption:</b> {character.redemption}
+                </Text>
+            )}
 
             <Grid>
                 <Grid.Col span={6}>

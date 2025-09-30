@@ -22,6 +22,7 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
     const [notes, setNotes] = useState(character.notes || "")
     const [ambition, setAmbition] = useState(character.ambition || "")
     const [desire, setDesire] = useState(character.desire || "")
+    const [redemption, setRedemption] = useState(character.redemption || "")
 
     return (
         <div>
@@ -78,6 +79,17 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
 
                 <Textarea
                     style={{ width: "300px" }}
+                    value={redemption}
+                    onChange={(event) => setRedemption(event.currentTarget.value)}
+                    placeholder="I failed to save my partner from a vampire attack, and now I dedicate my life to protecting others"
+                    label="Redemption"
+                    description="What your character seeks to atone for or make right"
+                    autosize
+                    minRows={2}
+                />
+
+                <Textarea
+                    style={{ width: "300px" }}
                     value={appearance}
                     onChange={(event) => setAppearance(event.currentTarget.value)}
                     placeholder="A tall woman in her thirties with determined eyes and calloused hands, often wearing a worn leather jacket"
@@ -123,7 +135,8 @@ const BasicsPicker = ({ character, setCharacter, nextStep }: BasicsPickerProps) 
                             history, 
                             notes,
                             ambition,
-                            desire
+                            desire,
+                            redemption
                         })
                         nextStep()
                     }}

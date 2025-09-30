@@ -30,6 +30,7 @@ export const characterSchema = z.object({
     pack: z.string(), // Replaces 'sire'
     concept: z.string(), // New Werewolf field
     chronicle: z.string(), // New Werewolf field
+    redemption: z.string().optional(), // Hunter redemption field
 
     // Hunter: The Reckoning 5e specific fields
     creed: creedNameSchema,
@@ -88,6 +89,7 @@ export const getEmptyCharacter = (): Character => {
         pack: "", // Replaces sire
         concept: "", // New Werewolf field
         chronicle: "", // New Werewolf field
+        redemption: "", // Hunter redemption field
 
         // Hunter fields
         creed: "",

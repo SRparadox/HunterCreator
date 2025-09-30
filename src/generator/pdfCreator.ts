@@ -493,6 +493,23 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     // Character details - map to appropriate PDF fields
     let additionalInfoText = ""
     
+    // Redemption
+    try {
+        form.getTextField("Redemption")?.setText(character.redemption || "")
+    } catch (e) {
+        try {
+            form.getTextField("redemption")?.setText(character.redemption || "")
+        } catch (e2) {
+            try {
+                form.getTextField("Notes2")?.setText(character.redemption || "")
+            } catch (e3) {
+                if (character.redemption) {
+                    additionalInfoText += `Redemption: ${character.redemption}\n\n`
+                }
+            }
+        }
+    }
+    
     // Appearance
     try {
         form.getTextField("sge")?.setText(character.appearance || "")
