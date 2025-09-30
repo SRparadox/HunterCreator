@@ -4,11 +4,8 @@ import { PDFBool, PDFDocument, PDFFont, PDFForm, PDFName } from "pdf-lib"
 import { Character } from "../data/Character"
 import { SkillsKey, skillsKeySchema } from "../data/Skills"
 import { attributesKeySchema } from "../data/Attributes"
-import { Power, Ritual } from "../data/Disciplines"
-import { Gift } from "../data/Gifts"
 import base64Pdf_hunter from "../resources/HtR5e_ENG_Sheet_2pMINI.base64?raw"
 import { upcase } from "./utils"
-import { DisciplineName } from "~/data/NameSchemas"
 
 let customFont: PDFFont
 
@@ -338,6 +335,9 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     }
 
     // Edges and Powers - Hunter-specific abilities
+    // Hunter PDF uses specific field naming:
+    // Edge names: Edge.X.0.0 (where X is edge index 0, 1, 2...)
+    // Edge powers: Edge.X.1.0 (where X is edge index, 1 indicates power level)
     const getEdgeText = (power: any) => {
         let text = power.name + ": "
         
@@ -371,29 +371,44 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         ...(character.rituals || [])
     ]
 
-    // Fill edge/power names and dice pools using the specified field pattern
+    // Fill edge/power names and dice pools using the Hunter-specific field pattern
     allEdgesAndPowers.forEach((power, index) => {
         try {
-            // Edge name goes into Edge/Gift fields (reusing werewolf gift fields for edges)
-            const edgeNameField = `0.${index}.Gift_Name-1`
+            // Hunter edges use Edge.X.0.0 pattern for edge names
+            const edgeNameField = `Edge.${index}.0.0`
             form.getTextField(edgeNameField)?.setText(getEdgeText(power))
             form.getTextField(edgeNameField)?.disableRichFormatting()
             
-            // Dice pool goes into corresponding dice pool field
-            const dicePoolField = `1.${index}.Gift_Name-1`
+            // Hunter edge powers use Edge.X.1.0 pattern for dice pools/systems
+            const edgePowerField = `Edge.${index}.1.0`
             const dicePoolText = getEdgeDicePoolText(power)
             if (dicePoolText) {
-                form.getTextField(dicePoolField)?.setText(dicePoolText)
-                form.getTextField(dicePoolField)?.disableRichFormatting()
+                form.getTextField(edgePowerField)?.setText(dicePoolText)
+                form.getTextField(edgePowerField)?.disableRichFormatting()
             }
         } catch (e) {
-            // If the specific field doesn't exist, try alternative naming
+            // If the specific Hunter field doesn't exist, try legacy werewolf naming
             try {
-                const altEdgeField = `Edge${index + 1}`
-                form.getTextField(altEdgeField)?.setText(getEdgeText(power))
-                form.getTextField(altEdgeField)?.disableRichFormatting()
+                const legacyEdgeField = `0.${index}.Gift_Name-1`
+                form.getTextField(legacyEdgeField)?.setText(getEdgeText(power))
+                form.getTextField(legacyEdgeField)?.disableRichFormatting()
+                
+                const legacyDiceField = `1.${index}.Gift_Name-1`
+                const dicePoolText = getEdgeDicePoolText(power)
+                if (dicePoolText) {
+                    form.getTextField(legacyDiceField)?.setText(dicePoolText)
+                    form.getTextField(legacyDiceField)?.disableRichFormatting()
+                }
             } catch (e2) {
-                // Continue with next if no suitable field found
+                // Try simple Edge naming as final fallback
+                try {
+                    const simpleEdgeField = `Edge${index + 1}`
+                    form.getTextField(simpleEdgeField)?.setText(getEdgeText(power))
+                    form.getTextField(simpleEdgeField)?.disableRichFormatting()
+                } catch (e3) {
+                    // Continue with next if no suitable field found
+                    console.warn(`Could not set edge field for power ${power.name}:`, e3)
+                }
             }
         }
     })
@@ -585,7 +600,7 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
                 try {
                     const fieldName = field.getName()
                     // Skip known problematic rich text fields
-                    const problematicFields = ['chronicleTenets', 'chronicleTenents']
+                    const problematicFields = ['chronicleTenets', 'chronicleTenents', 'ChronicleTeN.0.0.1']
                     if (problematicFields.includes(fieldName)) {
                         console.warn(`Skipping problematic rich text field: ${fieldName}`)
                         return
@@ -680,5 +695,13 @@ export const printFieldNames = async () => {
     const pdfDoc = await initPDFDocument(bytes)
     const form = pdfDoc.getForm()
 
-    console.log(JSON.stringify(getFields(form), null, 2))
+    const fields = getFields(form)
+    console.log("Hunter PDF Field Names:")
+    console.log(JSON.stringify(fields, null, 2))
+    
+    // Also log edge-specific fields for debugging
+    console.log("\nEdge-related fields:")
+    Object.keys(fields).filter(name => name.toLowerCase().includes('edge')).forEach(name => {
+        console.log(`${name}: ${fields[name]}`)
+    })
 }
