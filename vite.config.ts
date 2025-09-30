@@ -11,7 +11,7 @@ export default defineConfig({
         port: 3000,
     },
     plugins: [react()],
-    base: "/Werewolf-Character-Creator/",
+    base: "/",
     resolve: {
         alias: {
             "~": path.resolve(__dirname, "src"),
