@@ -86,18 +86,28 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         .forEach((attr) => {
             const lvl = attributes[attr]
             for (let i = 1; i <= lvl; i++) {
-                form.getCheckBox(`${upcase(attr).slice(0, 3)}-${i}`).check()
+                try {
+                    form.getCheckBox(`${upcase(attr).slice(0, 3)}-${i}`)?.check()
+                } catch (e) {
+                    // Skip if checkbox doesn't exist
+                }
             }
         })
 
     // Skills
     const setSpecialty = (skillName: SkillsKey, textFieldKey: string) => {
-        const specialties = (character.skillSpecialties || [])
-            .filter((s) => s.skill === skillName)
-            .filter((s) => s.name !== "")
-            .map((s) => s.name)
+        try {
+            const specialties = (character.skillSpecialties || [])
+                .filter((s) => s.skill === skillName)
+                .filter((s) => s.name !== "")
+                .map((s) => s.name)
 
-        if (specialties.length > 0) form.getTextField(textFieldKey).setText(specialties.join(", "))
+            if (specialties.length > 0) {
+                form.getTextField(textFieldKey)?.setText(specialties.join(", "))
+            }
+        } catch (e) {
+            // Skip if specialty field can't be set
+        }
     }
 
     const skills = character.skills
@@ -106,41 +116,65 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         .forEach((skill) => {
             const lvl = skills[skill]
             for (let i = 1; i <= lvl; i++) {
-                form.getCheckBox(`${upcase(skill).slice(0, 3)}-${i}`).check()
+                try {
+                    form.getCheckBox(`${upcase(skill).slice(0, 3)}-${i}`)?.check()
+                } catch (e) {
+                    // Skip if checkbox doesn't exist
+                }
             }
             setSpecialty(skill, `spec${upcase(skill).slice(0, 3)}`)
         })
 
     const aniKenLvl = skills["animal ken"]
     for (let i = 1; i <= aniKenLvl; i++) {
-        form.getCheckBox(`AniKen-${i}`).check()
+        try {
+            form.getCheckBox(`AniKen-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
     setSpecialty("animal ken", "specAniKen")
 
     // PDF-issue: Lead-1, but specLea  (4 letters vs 3 letters)
     const leadLvl = skills["leadership"]
     for (let i = 1; i <= leadLvl; i++) {
-        form.getCheckBox(`Lead-${i}`).check()
+        try {
+            form.getCheckBox(`Lead-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
     setSpecialty("leadership", "specLea")
 
     const stealthLvl = skills["stealth"]
     for (let i = 1; i <= stealthLvl; i++) {
-        form.getCheckBox(`Ste-${i}`).check()
+        try {
+            form.getCheckBox(`Ste-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
     setSpecialty("stealth", "specStea")
 
     // PDF-issue: "Fri-1" instead of "Fir-1"
     const fireLvl = skills["firearms"]
     for (let i = 1; i <= fireLvl; i++) {
-        form.getCheckBox(`Fri-${i}`).check()
+        try {
+            form.getCheckBox(`Fri-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
     setSpecialty("firearms", "specFir")
 
     // PDF-issue: Stre-1-1, but specStree  (4 letters vs 5 letters)
     const streeLvl = skills["streetwise"]
     for (let i = 1; i <= streeLvl; i++) {
-        form.getCheckBox(`Stre-${i}`).check()
+        try {
+            form.getCheckBox(`Stre-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
     setSpecialty("streetwise", "specStree")
     ;[
@@ -164,7 +198,11 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         .forEach((skill) => {
             const lvl = skills[skill]
             for (let i = 1; i <= lvl; i++) {
-                form.getCheckBox(`${upcase(skill).slice(0, 4)}-${i}`).check()
+                try {
+                    form.getCheckBox(`${upcase(skill).slice(0, 4)}-${i}`)?.check()
+                } catch (e) {
+                    // Skip if checkbox doesn't exist
+                }
             }
 
             setSpecialty(skill, `spec${upcase(skill).slice(0, 4)}`)
@@ -173,13 +211,21 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     // Health - Hunter health calculation (Stamina + 3)
     const health = 3 + character.attributes["stamina"]
     for (let i = 1; i <= health; i++) {
-        form.getCheckBox(`Health-${i}`).check()
+        try {
+            form.getCheckBox(`Health-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
 
     // Willpower - Hunter willpower calculation (Composure + Resolve)
     const willpower = character.attributes["composure"] + character.attributes["resolve"]
     for (let i = 1; i <= willpower; i++) {
-        form.getCheckBox(`WP-${i}`).check()
+        try {
+            form.getCheckBox(`WP-${i}`)?.check()
+        } catch (e) {
+            // Skip if checkbox doesn't exist
+        }
     }
 
     // Conviction (using rage field for Hunter)
@@ -212,7 +258,11 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
 
     // Top fields - Hunter character info
     // Name
-    form.getTextField("Name").setText(character.name)
+    try {
+        form.getTextField("Name")?.setText(character.name)
+    } catch (e) {
+        console.warn("Could not set Name field:", e)
+    }
     
     // Player Name
     try {
@@ -260,7 +310,7 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     
     // Chronicle
     try {
-        form.getTextField("Chronicle").setText(character.chronicle || "")
+        form.getTextField("Chronicle")?.setText(character.chronicle || "")
     } catch (e) {
         // Chronicle field doesn't exist in this PDF
     }
@@ -274,7 +324,7 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     
     // Pack info (Hunter cell)
     try {
-        form.getTextField("Pack").setText(character.pack || "")
+        form.getTextField("Pack")?.setText(character.pack || "")
     } catch (e) {
         try {
             form.getTextField("Cell")?.setText(character.pack || "")
@@ -521,15 +571,64 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
 
     // Experience - use character experience value directly
     const experience = character.experience || 0
-    form.getTextField("tEXP").setText(`${experience} XP`)
+    try {
+        form.getTextField("tEXP")?.setText(`${experience} XP`)
+    } catch (e) {
+        // Experience field doesn't exist or has issues
+    }
+
+    // Disable rich formatting on all text fields to prevent rich text errors
+    const disableRichFormattingOnAllFields = () => {
+        try {
+            const fields = form.getFields()
+            fields.forEach(field => {
+                try {
+                    const fieldName = field.getName()
+                    // Skip known problematic rich text fields
+                    const problematicFields = ['chronicleTenets', 'chronicleTenents']
+                    if (problematicFields.includes(fieldName)) {
+                        console.warn(`Skipping problematic rich text field: ${fieldName}`)
+                        return
+                    }
+                    
+                    if (field.constructor.name === 'PDFTextField') {
+                        (field as any).disableRichFormatting?.()
+                    }
+                } catch (e) {
+                    // Skip fields that can't be processed
+                    console.warn(`Could not process field: ${e}`)
+                }
+            })
+        } catch (e) {
+            // If we can't iterate fields, skip this step
+            console.warn("Could not iterate form fields:", e)
+        }
+    }
+
+    disableRichFormattingOnAllFields()
 
     // Fixes bug where text that is too long for field doesn't show until clicked
     // see https://github.com/Hopding/pdf-lib/issues/569#issuecomment-1087328416 and https://stackoverflow.com/questions/73058238/some-pdf-textfield-content-not-visible-until-clicked
-    // TODO: This breaks embedding the png in humanity-tracker!
-    form.acroForm.dict.set(PDFName.of("NeedAppearances"), PDFBool.True)
+    try {
+        form.acroForm.dict.set(PDFName.of("NeedAppearances"), PDFBool.True)
+    } catch (e) {
+        // Skip if this fails
+    }
 
     // Fixes embedded font not being applied on form fields
-    form.updateFieldAppearances(customFont)
+    // Wrap in try-catch to handle rich text field errors
+    try {
+        form.updateFieldAppearances(customFont)
+    } catch (e) {
+        console.warn("Could not update field appearances due to rich text fields:", e)
+        // Try without custom font
+        try {
+            form.updateFieldAppearances()
+        } catch (e2) {
+            console.warn("Could not update field appearances at all:", e2)
+            // Continue without updating appearances
+        }
+    }
 
     return await pdfDoc.save({ updateFieldAppearances: true })
 }
@@ -561,10 +660,14 @@ const getFields = (form: PDFForm): Record<string, string> => {
 
     const outFields: Record<string, string> = {}
     fields.forEach((field) => {
-        const type = field.constructor.name
-        const name = field.getName()
-
-        outFields[name] = type
+        try {
+            const type = field.constructor.name
+            const name = field.getName()
+            outFields[name] = type
+        } catch (e) {
+            // Skip fields that can't be read
+            console.warn("Could not read field:", e)
+        }
     })
 
     return outFields
