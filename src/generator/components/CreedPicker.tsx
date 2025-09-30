@@ -123,14 +123,14 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
                             ...character,
                             creed,
                             edges: [],
-                            availableEdgeNames: creeds[creed].edges,
+                            availableEdgeNames: [],
                             drive: character.drive,
                         })
                     } else {
                         setCharacter({
                             ...character,
                             creed,
-                            availableEdgeNames: creeds[creed].edges,
+                            availableEdgeNames: [],
                         })
                     }
 
@@ -147,14 +147,6 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
                 </Center>
 
                 <ScrollableDescription text={creeds[creed].description} creed={creed} />
-                
-                <Text size="xs" ta="center" c="yellow" mt="xs">
-                    <b>Virtue:</b> {creeds[creed].virtue}
-                </Text>
-                
-                <Text size="xs" ta="center" c="blue" mt="xs">
-                    {creeds[creed].organizationType}
-                </Text>
             </Card>
         )
     }
