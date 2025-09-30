@@ -34,15 +34,15 @@ export const testTemplate = async (basePdf: string) => {
     }
     try {
         form.getTextField("Name").setText("")
-        // Try werewolf fields first, fallback to vampire fields for compatibility
+        // Try hunter/werewolf fields first, fallback to vampire fields for compatibility
         try {
-            form.getTextField("Auspice").setText("")
+            form.getTextField("Creed").setText("")
             form.getTextField("Player").setText("")
             form.getTextField("Tribe").setText("")
             form.getTextField("Chronicle").setText("")
             form.getTextField("Patron").setText("")
         } catch (e) {
-            // Werewolf fields don't exist in this PDF
+            // Hunter/Werewolf fields don't exist in this PDF
         }
     } catch (err) {
         return {
@@ -192,17 +192,9 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         }
     }
 
-    // Top fields - Werewolf character info
+    // Top fields - Hunter character info
     // Name
     form.getTextField("Name").setText(character.name)
-    
-    // Auspice
-    const auspiceName = character.auspice
-    try {
-        form.getTextField("Auspice")?.setText(auspiceName || "")
-    } catch (e) {
-        // Auspice field doesn't exist in this PDF
-    }
     
     // Player Name
     try {
@@ -212,12 +204,16 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         form.getTextField("pcDescription")?.setText(character.playerName || "")
     }
     
-    // Tribe
-    const tribeName = character.tribe || character.clan
+    // Creed (instead of Tribe for Hunter)
     try {
-        form.getTextField("Tribe")?.setText(tribeName)
+        form.getTextField("Creed")?.setText(character.creed || "")
     } catch (e) {
-        form.getTextField("Clan")?.setText(tribeName)
+        // Fallback for older PDF forms that might expect tribe field
+        try {
+            form.getTextField("Tribe")?.setText(character.creed || "")
+        } catch (e2) {
+            // Neither field exists
+        }
     }
     
     // Chronicle
@@ -291,17 +287,16 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     }
 
     // Combine gifts and rites into a single array for unified numbering
-    const allGiftsAndRites = [
+    const allEdgesAndPowers = [
         ...(character.disciplines || []),
         ...(character.rituals || []),
-        ...(character.gifts || []),
-        ...(character.rites || [])
+        ...(character.edges || [])
     ]
 
-    // Fill gift/rite names and dice pools using the specified field pattern
-    allGiftsAndRites.forEach((power, index) => {
+    // Fill edge/power names and dice pools using the specified field pattern
+    allEdgesAndPowers.forEach((power, index) => {
         try {
-            // Gift name goes into 0.X.Gift_Name-1 pattern
+            // Edge name goes into 0.X.Gift_Name-1 pattern (reusing gift fields for edges)
             const giftNameField = `0.${index}.Gift_Name-1`
             form.getTextField(giftNameField)?.setText(getGiftText(power))
             form.getTextField(giftNameField)?.disableRichFormatting()

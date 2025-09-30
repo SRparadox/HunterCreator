@@ -5,7 +5,6 @@ import AttributesDisplay from "./components/AttributesDisplay"
 import BasicsDisplay from "./components/BasicsDisplay"
 import DisciplineDisplay from "./components/DisciplinesDisplay"
 import MeritsAndFlawsDisplay from "./components/MeritsAndFlawsDisplay"
-import RitesDisplay from "./components/RitesDisplay"
 import SkillDisplay from "./components/SkillsDisplay"
 import TouchstoneDisplay from "./components/TouchstoneDisplay"
 import { globals } from "../globals"
@@ -21,23 +20,17 @@ const Sidebar = ({ character }: SidebarProps) => {
         // Subtracting header-height
         <ScrollArea h={height - 60} type="never">
             <Stack>
-                {notDefault(character, "tribe") ? (
+                {notDefault(character, "creed") ? (
                     <Text fz="xl">
-                        <Center><b>Tribe:</b> {character.tribe}</Center>
+                        <Center><b>Creed:</b> {character.creed}</Center>
                     </Text>
                 ) : null}
                 {notDefault(character, "name") ? <BasicsDisplay character={character} /> : null}
                 {notDefault(character, "attributes") ? <AttributesDisplay attributes={character.attributes} /> : null}
                 {notDefault(character, "skills") ? <SkillDisplay skills={character.skills} /> : null}
-                {notDefault(character, "auspice") ? (
-                    <Text>
-                        <b>Auspice:</b> {character.auspice || "Not selected"}
-                    </Text>
+                {notDefault(character, "edges") ? (
+                    <DisciplineDisplay powers={character.edges} rituals={character.rituals} />
                 ) : null}
-                {notDefault(character, "gifts") ? (
-                    <DisciplineDisplay powers={character.gifts} rituals={character.rituals} />
-                ) : null}
-                {notDefault(character, "rites") ? <RitesDisplay rites={character.rites} /> : null}
                 {notDefault(character, "touchstones") ? <TouchstoneDisplay touchstones={character.touchstones} /> : null}
                 {notDefault(character, "merits") || notDefault(character, "flaws") ? (
                     <MeritsAndFlawsDisplay merits={character.merits} flaws={character.flaws} />

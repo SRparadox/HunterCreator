@@ -1,10 +1,9 @@
 import { z } from "zod"
 import { Power, powerSchema, ritualSchema } from "./Disciplines"
-import { riteSchema } from "./Rites"
 import { specialtySchema } from "./Specialties"
 import { skillsSchema } from "./Skills"
 import { attributesSchema } from "./Attributes"
-import { tribeNameSchema, auspiceNameSchema, giftNameSchema, creedNameSchema, driveNameSchema, edgeNameSchema } from "./NameSchemas"
+import { creedNameSchema, driveNameSchema, edgeNameSchema } from "./NameSchemas"
 
 export const meritFlawSchema = z.object({
     name: z.string(),
@@ -32,21 +31,18 @@ export const characterSchema = z.object({
     concept: z.string(), // New Werewolf field
     chronicle: z.string(), // New Werewolf field
 
-    // Werewolf 5e specific fields
-    tribe: tribeNameSchema, // Replaces 'clan'
-    auspice: auspiceNameSchema, // Replaces 'predatorType'
-    
     // Hunter: The Reckoning 5e specific fields
     creed: creedNameSchema,
     drive: driveNameSchema,
     availableEdgeNames: edgeNameSchema.array(),
-    edges: powerSchema.array(), // Using same structure as gifts/disciplines
+    edges: powerSchema.array(), // Using same structure as disciplines for Hunter Edges
     
-    // Temporary compatibility - will be removed later
-    clan: tribeNameSchema, // For backward compatibility, maps to tribe
+    // Legacy compatibility fields
+    clan: z.string(), // For backward compatibility
+    tribe: z.string(), // For backward compatibility
     predatorType: z.object({
-        name: auspiceNameSchema, // For backward compatibility, maps to auspice
-        pickedDiscipline: giftNameSchema.optional().default(""),
+        name: z.string(), // For backward compatibility
+        pickedDiscipline: z.string().optional().default(""),
         pickedSpecialties: specialtySchema.array(),
         pickedMeritsAndFlaws: meritFlawSchema.array(),
     }),
@@ -59,24 +55,14 @@ export const characterSchema = z.object({
     skills: skillsSchema,
     skillSpecialties: specialtySchema.array(),
     
-    // Werewolf fields
-    availableGiftNames: giftNameSchema.array(), // Replaces availableDisciplineNames
-    gifts: powerSchema.array(), // Replaces disciplines
-    rites: riteSchema.array(), // Werewolf rites (different from rituals)
-    rituals: ritualSchema.array(), // Blood Sorcery rituals (for backward compatibility)
-    
-    // For backward compatibility
-    availableDisciplineNames: giftNameSchema.array(),
+    // Legacy vampire fields for backward compatibility
+    availableDisciplineNames: z.string().array(),
     disciplines: powerSchema.array(),
+    rituals: ritualSchema.array(), // Blood Sorcery rituals (for backward compatibility)
 
-    // Werewolf stats
-    rage: z.number().min(0).int(), // Replaces bloodPotency
-    gnosis: z.number().min(0).int(), // Replaces generation
-    renown: z.object({
-        glory: z.number().min(0).int(),
-        honor: z.number().min(0).int(),
-        wisdom: z.number().min(0).int(),
-    }),
+    // Hunter stats (using some legacy names for compatibility)
+    rage: z.number().min(0).int(), // Used for conviction in Hunter
+    gnosis: z.number().min(0).int(), // Used for desperation in Hunter
 
     // For backward compatibility
     bloodPotency: z.number().min(0).int(),
@@ -103,18 +89,15 @@ export const getEmptyCharacter = (): Character => {
         concept: "", // New Werewolf field
         chronicle: "", // New Werewolf field
 
-        // Werewolf fields
-        tribe: "",
-        auspice: "",
-        
         // Hunter fields
         creed: "",
         drive: "",
         availableEdgeNames: [],
         edges: [],
         
-        // Backward compatibility
+        // Legacy compatibility
         clan: "",
+        tribe: "",
         predatorType: { name: "", pickedDiscipline: "", pickedSpecialties: [], pickedMeritsAndFlaws: [] },
         
         touchstones: [],
@@ -163,24 +146,14 @@ export const getEmptyCharacter = (): Character => {
         },
         skillSpecialties: [],
         
-        // Werewolf fields
-        availableGiftNames: [],
-        gifts: [],
-        rites: [],
-        rituals: [],
-        
-        // Backward compatibility
+        // Legacy vampire fields
         availableDisciplineNames: [],
         disciplines: [],
+        rituals: [],
 
-        // Werewolf stats
-        rage: 1,
-        gnosis: 1,
-        renown: {
-            glory: 0,
-            honor: 0,
-            wisdom: 0,
-        },
+        // Hunter stats
+        rage: 1, // Used for conviction in Hunter
+        gnosis: 1, // Used for desperation in Hunter
         
         // Backward compatibility
         bloodPotency: 0,

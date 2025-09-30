@@ -97,7 +97,7 @@ const DrivePicker = ({ character, setCharacter, nextStep }: DrivePickerProps) =>
     }
 
     const createDrivePick = (drive: DriveName, c2: string) => {
-        const bgColor = theme.fn.linearGradient(0, c1, c2)
+        const bgColor = theme.fn?.linearGradient ? theme.fn.linearGradient(0, c1, c2) : `linear-gradient(0deg, ${c1}, ${c2})`
 
         return (
             <Grid.Col key={drive} span={4}>
@@ -126,7 +126,7 @@ const DrivePicker = ({ character, setCharacter, nextStep }: DrivePickerProps) =>
                 >
                     <Card.Section>
                         <Center pt={10}>
-                            <div style={{ height: 120, width: 120, backgroundColor: theme.colors.gray[6], borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ height: 120, width: 120, backgroundColor: theme.colors?.gray?.[6] || '#868e96', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <Text size="xl" weight={700}>{drive.charAt(0)}</Text>
                             </div>
                         </Center>
@@ -159,40 +159,40 @@ const DrivePicker = ({ character, setCharacter, nextStep }: DrivePickerProps) =>
             <hr color="#fd7e14" />
 
             <ScrollArea h={height - 215} w={"100%"} p={20}>
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.blue[6]}>
+                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.blue?.[6] || '#339af0'}>
                     Knowledge-Seeking Drives
                 </Text>
                 <Grid grow m={0}>
                     {["Curiosity"]
                         .map((d) => driveNameSchema.parse(d))
-                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.blue[8], 0.9)))}
+                        .map((drive) => createDrivePick(drive, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.blue?.[8] || '#1864ab', 0.9) : 'rgba(24, 100, 171, 0.9)'))}
                 </Grid>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.red[8]}>
+                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.red?.[8] || '#c92a2a'}>
                     Retribution Drives
                 </Text>
                 <Grid grow m={0}>
                     {["Vengeance", "Oath"]
                         .map((d) => driveNameSchema.parse(d))
-                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.red[8], 0.9)))}
+                        .map((drive) => createDrivePick(drive, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.red?.[8] || '#c92a2a', 0.9) : 'rgba(201, 42, 42, 0.9)'))}
                 </Grid>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.green[7]}>
+                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.green?.[7] || '#51cf66'}>
                     Self-Serving Drives
                 </Text>
                 <Grid grow m={0}>
                     {["Greed", "Pride", "Envy"]
                         .map((d) => driveNameSchema.parse(d))
-                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.green[8], 0.9)))}
+                        .map((drive) => createDrivePick(drive, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.green?.[8] || '#37b24d', 0.9) : 'rgba(55, 178, 77, 0.9)'))}
                 </Grid>
 
-                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors.purple[7]}>
+                <Text ta="center" fz="xl" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.purple?.[7] || '#9775fa'}>
                     Redemptive Drives
                 </Text>
                 <Grid grow m={0}>
                     {["Atonement"]
                         .map((d) => driveNameSchema.parse(d))
-                        .map((drive) => createDrivePick(drive, theme.fn.rgba(theme.colors.purple[8], 0.9)))}
+                        .map((drive) => createDrivePick(drive, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.purple?.[8] || '#7950f2', 0.9) : 'rgba(121, 80, 242, 0.9)'))}
                 </Grid>
             </ScrollArea>
         </div>

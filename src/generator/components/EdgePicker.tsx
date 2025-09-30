@@ -73,8 +73,8 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
         const isSelected = selectedEdges.includes(edgeName)
         const isAvailable = character.availableEdgeNames.includes(edgeName)
         const bgColor = isSelected 
-            ? theme.fn.linearGradient(0, color, theme.colors.green[7])
-            : theme.fn.linearGradient(0, "rgba(26, 27, 30, 0.90)", color)
+            ? (theme.fn?.linearGradient ? theme.fn.linearGradient(0, color, theme.colors?.green?.[7] || '#51cf66') : `linear-gradient(0deg, ${color}, #51cf66)`)
+            : (theme.fn?.linearGradient ? theme.fn.linearGradient(0, "rgba(26, 27, 30, 0.90)", color) : `linear-gradient(0deg, rgba(26, 27, 30, 0.90), ${color})`)
 
         return (
             <Grid.Col key={edgeName} span={6}>
@@ -88,7 +88,7 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
                         background: bgColor, 
                         cursor: isAvailable ? "pointer" : "not-allowed",
                         opacity: isAvailable ? 1 : 0.5,
-                        border: isSelected ? `2px solid ${theme.colors.green[5]}` : "2px solid transparent"
+                        border: isSelected ? `2px solid ${theme.colors?.green?.[5] || '#69db7c'}` : "2px solid transparent"
                     }}
                     onClick={() => {
                         if (isAvailable) {
@@ -101,7 +101,7 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
                             <div style={{ 
                                 height: 80, 
                                 width: 80, 
-                                backgroundColor: isSelected ? theme.colors.green[6] : theme.colors.gray[6], 
+                                backgroundColor: isSelected ? (theme.colors?.green?.[6] || '#51cf66') : (theme.colors?.gray?.[6] || '#868e96'), 
                                 borderRadius: '50%', 
                                 display: 'flex', 
                                 alignItems: 'center', 
@@ -173,44 +173,44 @@ const EdgePicker = ({ character, setCharacter, nextStep }: EdgePickerProps) => {
             <ScrollArea h={height - 300} w={"100%"} p={20}>
                 {physicalEdges.length > 0 && (
                     <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors.red[6]}>
+                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.red?.[6] || '#fa5252'}>
                             Physical Edges
                         </Text>
                         <Grid grow m={0}>
-                            {physicalEdges.map((edge) => createEdgePick(edge, theme.fn.rgba(theme.colors.red[8], 0.9)))}
+                            {physicalEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.red?.[8] || '#c92a2a', 0.9) : 'rgba(201, 42, 42, 0.9)'))}
                         </Grid>
                     </>
                 )}
 
                 {mentalEdges.length > 0 && (
                     <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors.blue[6]}>
+                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.blue?.[6] || '#339af0'}>
                             Mental Edges
                         </Text>
                         <Grid grow m={0}>
-                            {mentalEdges.map((edge) => createEdgePick(edge, theme.fn.rgba(theme.colors.blue[8], 0.9)))}
+                            {mentalEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.blue?.[8] || '#1864ab', 0.9) : 'rgba(24, 100, 171, 0.9)'))}
                         </Grid>
                     </>
                 )}
 
                 {socialEdges.length > 0 && (
                     <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors.green[6]}>
+                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.green?.[6] || '#51cf66'}>
                             Social Edges
                         </Text>
                         <Grid grow m={0}>
-                            {socialEdges.map((edge) => createEdgePick(edge, theme.fn.rgba(theme.colors.green[8], 0.9)))}
+                            {socialEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.green?.[8] || '#37b24d', 0.9) : 'rgba(55, 178, 77, 0.9)'))}
                         </Grid>
                     </>
                 )}
 
                 {supernaturalEdges.length > 0 && (
                     <>
-                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors.grape[6]}>
+                        <Text ta="center" fz="lg" fw={700} mb={"sm"} mt={"md"} c={theme.colors?.grape?.[6] || '#9775fa'}>
                             Supernatural Edges
                         </Text>
                         <Grid grow m={0}>
-                            {supernaturalEdges.map((edge) => createEdgePick(edge, theme.fn.rgba(theme.colors.grape[8], 0.9)))}
+                            {supernaturalEdges.map((edge) => createEdgePick(edge, theme.fn?.rgba ? theme.fn.rgba(theme.colors?.grape?.[8] || '#7950f2', 0.9) : 'rgba(121, 80, 242, 0.9)'))}
                         </Grid>
                     </>
                 )}

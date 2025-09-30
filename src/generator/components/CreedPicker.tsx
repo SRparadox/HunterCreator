@@ -98,7 +98,7 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
     }
 
     const createCreedDescription = (creed: CreedName, c2: string) => {
-        const bgColor = theme.fn.linearGradient(0, c1, c2)
+        const bgColor = theme.fn?.linearGradient ? theme.fn.linearGradient(0, c1, c2) : `linear-gradient(0deg, ${c1}, ${c2})`
 
         return (
             <Card
@@ -187,7 +187,7 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
                 <Grid grow m={0} gutter="md">
                     {/* Entrepreneurial - Description | Picture */}
                     <Grid.Col span={6}>
-                        {createCreedDescription("Entrepreneurial", theme.fn.rgba(theme.colors.blue[8], 0.9))}
+                        {createCreedDescription("Entrepreneurial", theme.fn?.rgba ? theme.fn.rgba(theme.colors?.blue?.[8] || '#1864ab', 0.9) : 'rgba(24, 100, 171, 0.9)')}
                     </Grid.Col>
                     <Grid.Col span={6}>
                         {createCreedPicture("Entrepreneurial")}
@@ -198,12 +198,12 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
                         {createCreedPicture("Faithful")}
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        {createCreedDescription("Faithful", theme.fn.rgba(theme.colors.red[8], 0.9))}
+                        {createCreedDescription("Faithful", theme.fn?.rgba ? theme.fn.rgba(theme.colors?.red?.[8] || '#c92a2a', 0.9) : 'rgba(201, 42, 42, 0.9)')}
                     </Grid.Col>
 
                     {/* Inquisitive - Description | Picture */}
                     <Grid.Col span={6}>
-                        {createCreedDescription("Inquisitive", theme.fn.rgba(theme.colors.grape[8], 0.9))}
+                        {createCreedDescription("Inquisitive", theme.fn?.rgba ? theme.fn.rgba(theme.colors?.grape?.[8] || '#7950f2', 0.9) : 'rgba(121, 80, 242, 0.9)')}
                     </Grid.Col>
                     <Grid.Col span={6}>
                         {createCreedPicture("Inquisitive")}
@@ -214,12 +214,12 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
                         {createCreedPicture("Martial")}
                     </Grid.Col>
                     <Grid.Col span={6}>
-                        {createCreedDescription("Martial", theme.fn.rgba(theme.colors.blue[8], 0.9))}
+                        {createCreedDescription("Martial", theme.fn?.rgba ? theme.fn.rgba(theme.colors?.blue?.[8] || '#1864ab', 0.9) : 'rgba(24, 100, 171, 0.9)')}
                     </Grid.Col>
 
                     {/* Underground - Description | Picture */}
                     <Grid.Col span={6}>
-                        {createCreedDescription("Underground", theme.fn.rgba(theme.colors.green[8], 0.9))}
+                        {createCreedDescription("Underground", theme.fn?.rgba ? theme.fn.rgba(theme.colors?.green?.[8] || '#37b24d', 0.9) : 'rgba(55, 178, 77, 0.9)')}
                     </Grid.Col>
                     <Grid.Col span={6}>
                         {createCreedPicture("Underground")}
