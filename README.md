@@ -5,7 +5,7 @@
 
 
 Quickly and easily create your Werewolf character & export to printable, editable PDF.
-[Link](https://srparadox.github.io/Werewolf-Character-Creator)
+[Link](https://srparadox.github.io/HunterCreator)
 
 The creator runs entirely in your browser, no files are sent to a server.
 
