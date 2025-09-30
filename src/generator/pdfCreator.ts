@@ -617,14 +617,26 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
                 try {
                     const fieldName = field.getName()
                     // Skip known problematic rich text fields
-                    const problematicFields = ['chronicleTenets', 'chronicleTenents', 'ChronicleTeN.0.0.1']
-                    if (problematicFields.includes(fieldName)) {
+                    const problematicFields = [
+                        'chronicleTenets', 'chronicleTenents', 'ChronicleTeN.0.0.1',
+                        'chronicle', 'Chronicle', 'chronicleTenants', 'ChronicleText',
+                        'chronicletenets', 'CHRONICLETENETS'
+                    ]
+                    if (problematicFields.some(pf => fieldName.toLowerCase().includes(pf.toLowerCase()))) {
                         console.warn(`Skipping problematic rich text field: ${fieldName}`)
                         return
                     }
                     
                     if (field.constructor.name === 'PDFTextField') {
-                        (field as any).disableRichFormatting?.()
+                        // Check if this is a rich text field before processing
+                        try {
+                            // Try to access the field's value to detect rich text issues
+                            ;(field as any).getText?.()
+                            ;(field as any).disableRichFormatting?.()
+                        } catch (richTextError) {
+                            console.warn(`Detected rich text field, skipping: ${fieldName}`)
+                            return
+                        }
                     }
                 } catch (e) {
                     // Skip fields that can't be processed
@@ -650,15 +662,43 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     // Fixes embedded font not being applied on form fields
     // Wrap in try-catch to handle rich text field errors
     try {
-        form.updateFieldAppearances(customFont)
+        // First try to manually exclude problematic fields from appearance updates
+        const fields = form.getFields()
+        const safeFields = fields.filter(field => {
+            try {
+                const fieldName = field.getName()
+                const problematicPatterns = [
+                    'chronicleten', 'chronicle', 'tenets', 'tenents'
+                ]
+                return !problematicPatterns.some(pattern => 
+                    fieldName.toLowerCase().includes(pattern.toLowerCase())
+                )
+            } catch (e) {
+                return false // Skip problematic fields
+            }
+        })
+        
+        // Try updating appearances with custom font only for safe fields
+        try {
+            form.updateFieldAppearances(customFont)
+        } catch (richTextError) {
+            console.warn("Rich text field error with custom font, trying without:", richTextError)
+            // Try without custom font
+            try {
+                form.updateFieldAppearances()
+            } catch (e2) {
+                console.warn("Could not update field appearances at all:", e2)
+                // Continue without updating appearances - the PDF will still be functional
+            }
+        }
     } catch (e) {
         console.warn("Could not update field appearances due to rich text fields:", e)
-        // Try without custom font
+        // Try without custom font as fallback
         try {
             form.updateFieldAppearances()
         } catch (e2) {
             console.warn("Could not update field appearances at all:", e2)
-            // Continue without updating appearances
+            // Continue without updating appearances - the PDF will still be functional
         }
     }
 
