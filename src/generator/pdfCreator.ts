@@ -2,12 +2,12 @@ import { notifications } from "@mantine/notifications"
 import fontkit from "@pdf-lib/fontkit"
 import { PDFBool, PDFDocument, PDFFont, PDFForm, PDFName } from "pdf-lib"
 import { Character } from "../data/Character"
-import { tribes } from "../data/Tribes"
+import { creeds } from "../data/Creeds"
 import { SkillsKey, skillsKeySchema } from "../data/Skills"
 import { attributesKeySchema } from "../data/Attributes"
 import { Power, Ritual } from "../data/Disciplines"
 import { Gift } from "../data/Gifts"
-import base64Pdf_werewolf from "../resources/WtA5e_ENG_Sheet_2pMINI.base64?raw"
+import base64Pdf_hunter from "../resources/HtR5e_ENG_Sheet_2pMINI.base64?raw"
 import { upcase } from "./utils"
 import { DisciplineName } from "~/data/NameSchemas"
 
@@ -65,7 +65,7 @@ const downloadPdf = (fileName: string, bytes: Uint8Array) => {
 }
 
 const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => {
-    const bytes = base64ToArrayBuffer(base64Pdf_werewolf)
+    const bytes = base64ToArrayBuffer(base64Pdf_hunter)
 
     const pdfDoc = await initPDFDocument(bytes)
     const form = pdfDoc.getForm()
@@ -213,12 +213,12 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         form.getTextField("pcDescription")?.setText(character.playerName || "")
     }
     
-    // Tribe
-    const tribeName = character.tribe || character.clan
+    // Creed
+    const creedName = character.creed || character.clan
     try {
-        form.getTextField("Tribe")?.setText(tribeName)
+        form.getTextField("Creed")?.setText(creedName)
     } catch (e) {
-        form.getTextField("Clan")?.setText(tribeName)
+        form.getTextField("Clan")?.setText(creedName)
     }
     
     // Chronicle
@@ -228,48 +228,38 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
         // Chronicle field doesn't exist in this PDF
     }
     
-    // Patron (from tribe data)
-    let patronName = ""
-    if (tribeName && tribes[tribeName as keyof typeof tribes]) {
-        const tribe = tribes[tribeName as keyof typeof tribes]
-        patronName = tribe.patron || ""
+    // Drive (from creed data)
+    let driveName = ""
+    if (creedName && creeds[creedName as keyof typeof creeds]) {
+        const creed = creeds[creedName as keyof typeof creeds]
+        driveName = creed.drive || ""
     }
     try {
-        form.getTextField("Patron")?.setText(patronName)
+        form.getTextField("Drive")?.setText(driveName)
     } catch (e) {
-        // Patron field doesn't exist in this PDF
+        // Drive field doesn't exist in this PDF
     }
     
-    // For werewolf, we use ban and favor instead of bane and compulsion
-    if (tribeName && tribes[tribeName as keyof typeof tribes]) {
-        const tribe = tribes[tribeName as keyof typeof tribes]
-        const banText = tribe.ban
-        const favorText = tribe.favor
-        const patronText = tribe.patron || ""
+    // For hunter, we use drive and desperation instead of bane and compulsion
+    if (creedName && creeds[creedName as keyof typeof creeds]) {
+        const creed = creeds[creedName as keyof typeof creeds]
+        const desperationText = creed.desperation
+        const driveText = creed.drive
+        const approachText = creed.approach || ""
         
-        // Try to set tribe-specific fields, fall back to clan fields if werewolf sheet doesn't have them yet
+        // Try to set creed-specific fields, fall back to clan fields if hunter sheet doesn't have them yet
         try {
-            form.getTextField("TribeBan")?.setText(banText)
-            form.getTextField("TribeFavor")?.setText(favorText)
-            form.getTextField("Patron")?.setText(patronText)
+            form.getTextField("CreedDesperation")?.setText(desperationText)
+            form.getTextField("CreedDrive")?.setText(driveText)
+            form.getTextField("CreedApproach")?.setText(approachText)
         } catch (e) {
-            // Fallback to original clan fields if werewolf sheet isn't ready
+            // Fallback to original clan fields if hunter sheet isn't ready
             try {
-                form.getTextField("ClanBane")?.setText(banText)
-                form.getTextField("ClanCompulsion")?.setText(favorText)
+                form.getTextField("ClanBane")?.setText(desperationText)
+                form.getTextField("ClanCompulsion")?.setText(driveText)
             } catch (e2) {
                 // If neither work, just continue
             }
-        }
-        
-        // Try to set renown information
-        try {
-            const renownField = `${tribe.renownType}Renown`
-            const existingRenown = form.getTextField(renownField)?.getText() || "0"
-            const newRenown = parseInt(existingRenown) + tribe.renownDots
-            form.getTextField(renownField)?.setText(newRenown.toString())
-        } catch (e) {
-            // If renown fields don't exist yet, continue
         }
     }
 
@@ -388,11 +378,11 @@ const createPdf_nerdbert = async (character: Character): Promise<Uint8Array> => 
     // Flavor and Bans - Add to touchstoneNotes field
     let flavorAndBansText = ""
     
-    // Add tribe flavor and ban
-    if (tribeName && tribes[tribeName as keyof typeof tribes]) {
-        const tribe = tribes[tribeName as keyof typeof tribes]
-        flavorAndBansText += `Tribe Flavor: ${tribe.favor}\n`
-        flavorAndBansText += `Tribe Ban: ${tribe.ban}\n\n`
+    // Add creed drive and desperation
+    if (creedName && creeds[creedName as keyof typeof creeds]) {
+        const creed = creeds[creedName as keyof typeof creeds]
+        flavorAndBansText += `Creed Drive: ${creed.drive}\n`
+        flavorAndBansText += `Creed Desperation: ${creed.desperation}\n\n`
     }
     
     // Map specific fields according to PDF structure
@@ -499,7 +489,7 @@ const getFields = (form: PDFForm): Record<string, string> => {
 }
 
 export const printFieldNames = async () => {
-    const basePdf = base64Pdf_werewolf
+    const basePdf = base64Pdf_hunter
     const bytes = base64ToArrayBuffer(basePdf)
 
     const pdfDoc = await initPDFDocument(bytes)

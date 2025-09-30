@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const pdfPath = path.join(__dirname, '../src/resources/WerewolfSheet.pdf')
-const base64Path = path.join(__dirname, '../src/resources/WerewolfSheet.base64')
+const pdfPath = path.join(__dirname, '../src/resources/HtR5e_ENG_Sheet_2pMINI.pdf')
+const base64Path = path.join(__dirname, '../src/resources/HtR5e_ENG_Sheet_2pMINI.base64')
 
 const main = () => {
     console.log(`Converting pdf to base64`)

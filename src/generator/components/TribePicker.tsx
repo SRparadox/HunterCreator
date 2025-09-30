@@ -2,9 +2,9 @@ import { Card, Center, Grid, Image, ScrollArea, Text, Title, useMantineTheme } f
 import { notifications } from "@mantine/notifications"
 import { useEffect, useRef, useState } from "react"
 import ReactGA from "react-ga4"
-import { TribeName, tribeNameSchema, DisciplineName } from "~/data/NameSchemas"
+import { CreedName, creedNameSchema, DisciplineName } from "~/data/NameSchemas"
 import { Character } from "../../data/Character"
-import { tribes } from "../../data/Tribes"
+import { creeds } from "../../data/Creeds"
 import { globals } from "../../globals"
 import { notDefault } from "../utils"
 
@@ -20,12 +20,12 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
     }, [])
 
     const theme = useMantineTheme()
-    const [hoveredTribe, setHoveredTribe] = useState<TribeName | null>(null)
+    const [hoveredTribe, setHoveredTribe] = useState<CreedName | null>(null)
 
     const c1 = "rgba(26, 27, 30, 0.90)"
 
     // Scrollable text component for descriptions
-    const ScrollableDescription = ({ text, tribe }: { text: string; tribe: TribeName }) => {
+    const ScrollableDescription = ({ text, tribe }: { text: string; tribe: CreedName }) => {
         const textRef = useRef<HTMLDivElement>(null)
         const [shouldScroll, setShouldScroll] = useState(false)
         
@@ -97,7 +97,7 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
         )
     }
 
-    const createTribePick = (tribe: TribeName, c2: string) => {
+    const createTribePick = (tribe: CreedName, c2: string) => {
         const bgColor = theme.fn.linearGradient(0, c1, c2)
 
         return (
@@ -126,8 +126,8 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
                                 clan: tribe, // For backward compatibility
                                 gifts: [],
                                 disciplines: [], // For backward compatibility
-                                availableGiftNames: tribes[tribe].gifts,
-                                availableDisciplineNames: tribes[tribe].gifts as string[] as DisciplineName[], // For compatibility
+                                availableGiftNames: creeds[tribe].gifts,
+                                availableDisciplineNames: creeds[tribe].gifts as string[] as DisciplineName[], // For compatibility
                                 auspice: character.auspice,
                                 predatorType: character.predatorType, // For compatibility
                             })
@@ -136,8 +136,8 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
                                 ...character,
                                 tribe,
                                 clan: tribe, // For backward compatibility 
-                                availableGiftNames: tribes[tribe].gifts,
-                                availableDisciplineNames: tribes[tribe].gifts as string[] as DisciplineName[], // For compatibility
+                                availableGiftNames: creeds[tribe].gifts,
+                                availableDisciplineNames: creeds[tribe].gifts as string[] as DisciplineName[], // For compatibility
                             })
                         }
 
@@ -151,7 +151,7 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
                 >
                     <Card.Section>
                         <Center pt={10}>
-                            <Image fit="contain" withPlaceholder src={tribes[tribe].logo} height={120} width={120} alt={tribe} />
+                            <Image fit="contain" withPlaceholder src={creeds[tribe].logo} height={120} width={120} alt={tribe} />
                         </Center>
                     </Card.Section>
 
@@ -159,14 +159,14 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
                         <Title p="md">{tribe}</Title>
                     </Center>
 
-                    <ScrollableDescription text={tribes[tribe].description} tribe={tribe} />
+                    <ScrollableDescription text={creeds[tribe].description} tribe={tribe} />
                     
                     <Text size="xs" ta="center" c="yellow" mt="xs">
-                        <b>Favor:</b> {tribes[tribe].favor}
+                        <b>Drive:</b> {creeds[tribe].drive}
                     </Text>
                     
                     <Text size="xs" ta="center" c="blue" mt="xs">
-                        +2 {tribes[tribe].renownType} Renown
+                        <b>Approach:</b> {creeds[tribe].approach}
                     </Text>
                 </Card>
             </Grid.Col>
@@ -177,7 +177,7 @@ const TribePicker = ({ character, setCharacter, nextStep }: TribePickerProps) =>
     return (
         <div style={{ height: height - 250 }}>
             <Text fz={"30px"} ta={"center"}>
-                Pick your <b>Tribe</b>
+                Pick your <b>Creed</b>
             </Text>
 
             <Text ta="center" fz="xl" fw={700} c="red">

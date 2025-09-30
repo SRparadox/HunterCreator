@@ -26,21 +26,15 @@ export const clanNameSchema = z.union([
 ])
 export type ClanName = z.infer<typeof clanNameSchema>
 
-export const tribeNameSchema = z.union([
-    z.literal("Black Furies"),
-    z.literal("Bone Gnawers"),
-    z.literal("Children of Gaia"),
-    z.literal("Galestalkers"),
-    z.literal("Ghost Council"),
-    z.literal("Glass Walkers"),
-    z.literal("Hart Wardens"),
-    z.literal("Red Talons"),
-    z.literal("Shadow Lords"),
-    z.literal("Silent Striders"),
-    z.literal("Silver Fangs"),
+export const creedNameSchema = z.union([
+    z.literal("Entrepreneurial"),
+    z.literal("Faithful"),
+    z.literal("Inquisitive"),
+    z.literal("Martial"),
+    z.literal("Underground"),
     z.literal(""),
 ])
-export type TribeName = z.infer<typeof tribeNameSchema>
+export type CreedName = z.infer<typeof creedNameSchema>
 
 export const disciplineNameSchema = z.union([
     z.literal("animalism"),

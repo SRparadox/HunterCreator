@@ -4,7 +4,7 @@ import { riteSchema } from "./Rites"
 import { specialtySchema } from "./Specialties"
 import { skillsSchema } from "./Skills"
 import { attributesSchema } from "./Attributes"
-import { tribeNameSchema, auspiceNameSchema, giftNameSchema } from "./NameSchemas"
+import { creedNameSchema, auspiceNameSchema, giftNameSchema } from "./NameSchemas"
 
 export const meritFlawSchema = z.object({
     name: z.string(),
@@ -32,12 +32,12 @@ export const characterSchema = z.object({
     concept: z.string(), // New Werewolf field
     chronicle: z.string(), // New Werewolf field
 
-    // Werewolf 5e specific fields
-    tribe: tribeNameSchema, // Replaces 'clan'
+    // Hunter 5e specific fields
+    creed: creedNameSchema, // Replaces 'clan'
     auspice: auspiceNameSchema, // Replaces 'predatorType'
     
     // Temporary compatibility - will be removed later
-    clan: tribeNameSchema, // For backward compatibility, maps to tribe
+    clan: creedNameSchema, // For backward compatibility, maps to creed
     predatorType: z.object({
         name: auspiceNameSchema, // For backward compatibility, maps to auspice
         pickedDiscipline: giftNameSchema.optional().default(""),
@@ -97,8 +97,8 @@ export const getEmptyCharacter = (): Character => {
         concept: "", // New Werewolf field
         chronicle: "", // New Werewolf field
 
-        // Werewolf fields
-        tribe: "",
+        // Hunter fields
+        creed: "",
         auspice: "",
         
         // Backward compatibility
