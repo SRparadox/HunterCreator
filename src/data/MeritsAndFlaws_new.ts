@@ -62,7 +62,7 @@ export const mentalMeritsAndFlaws: MeritsAndFlaws = {
         { name: "Time Sense", cost: [1], summary: "Always know the current time and track time passage perfectly" }
     ],
     flaws: [
-        { name: "Amnesia", cost: [2], summary: "No memory of life before First Change" },
+        { name: "Amnesia", cost: [2], summary: "No memory of life before the Awakening" },
         { name: "Absent-Minded", cost: [3], summary: "Frequently forget important details and appointments" },
         { name: "Confused", cost: [2], summary: "+1 difficulty to all mental rolls" },
         { name: "Nightmares", cost: [1], summary: "Disturbing dreams prevent restful sleep" },

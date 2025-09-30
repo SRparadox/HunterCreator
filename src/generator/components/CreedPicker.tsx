@@ -123,14 +123,14 @@ const CreedPicker = ({ character, setCharacter, nextStep }: CreedPickerProps) =>
                             ...character,
                             creed,
                             edges: [],
-                            availableEdgeNames: [],
+                            availableEdgeNames: ["arsenal", "blessed", "fleet", "library", "net", "ordnance", "pursuit", "stake"],
                             drive: character.drive,
                         })
                     } else {
                         setCharacter({
                             ...character,
                             creed,
-                            availableEdgeNames: [],
+                            availableEdgeNames: ["arsenal", "blessed", "fleet", "library", "net", "ordnance", "pursuit", "stake"],
                         })
                     }
 
